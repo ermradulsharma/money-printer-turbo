@@ -14,6 +14,7 @@
 ---
 
 </div>
+
 **MoneyPrinterTurbo** is an all-in-one AI short video creation suite. Simply provide a **topic** or **keywords**, and it automatically orchestrates script writing, visual material acquisition, text-to-speech voiceover, subtitle alignment, background music, and HD rendering.
 
 - ✍️ **AI Scripting**: Generates multi-scene video scripts and media search prompts.
