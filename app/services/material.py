@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
 import random
 import threading
@@ -1212,16 +1213,33 @@ def download_videos(
         random.shuffle(valid_video_items)
 
     total_duration = 0.0
-    for item in valid_video_items:
+
+    def _download_task(item: MaterialInfo) -> tuple[MaterialInfo, str | None]:
         try:
             source_info = item.source_info if isinstance(item.source_info, dict) else {}
             logger.info(
                 f"downloading {item.provider} video: "
                 f"asset_id={source_info.get('asset_id') or 'unknown'}"
             )
-            saved_video_path = save_video(
+            saved_path = save_video(
                 video_url=item.url, save_dir=material_directory
             )
+            return item, saved_path
+        except Exception as e:
+            logger.error(
+                "failed to download material video: "
+                f"provider={item.provider}, error={type(e).__name__}, "
+                f"detail={_redact_request_error(e, item.url)}"
+            )
+            return item, None
+
+    max_workers = min(5, max(1, len(valid_video_items)))
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_item = {
+            executor.submit(_download_task, item): item for item in valid_video_items
+        }
+        for future in as_completed(future_to_item):
+            item, saved_video_path = future.result()
             if saved_video_path:
                 logger.info(f"video saved: {saved_video_path}")
                 video_paths.append(saved_video_path)
@@ -1242,12 +1260,7 @@ def download_videos(
                         f"total duration of downloaded videos: {total_duration} seconds, skip downloading more"
                     )
                     break
-        except Exception as e:
-            logger.error(
-                "failed to download material video: "
-                f"provider={item.provider}, error={type(e).__name__}, "
-                f"detail={_redact_request_error(e, item.url)}"
-            )
+
     logger.success(f"downloaded {len(video_paths)} videos")
     _persist_material_sources(task_id, material_sources)
     return video_paths
