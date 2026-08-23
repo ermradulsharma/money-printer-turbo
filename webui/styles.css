@@ -6,18 +6,20 @@
     --mpt-bg-app: #0B0F19;
     --mpt-bg-card: rgba(17, 24, 39, 0.75);
     --mpt-bg-control: rgba(15, 23, 42, 0.85);
-    
+
     --mpt-border-subtle: rgba(255, 255, 255, 0.12);
     --mpt-primary: #4F46E5;
     --mpt-primary-hover: #4338CA;
-    
+
     --mpt-text-white: #FFFFFF;
     --mpt-text-main: #F8FAFC;
     --mpt-text-muted: #94A3B8;
 }
 
 /* Page Background & Reset */
-html, body, .stApp {
+html,
+body,
+.stApp {
     font-family: var(--mpt-font) !important;
     background-color: var(--mpt-bg-app) !important;
     background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 75%) !important;
@@ -37,17 +39,23 @@ div[data-testid="stSkillsNudge"] {
 }
 
 div[data-testid="stMainBlockContainer"] {
-    padding-top: 0.75rem !important;
-    padding-bottom: 2rem !important;
-    max-width: 1400px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    /* max-width: 1400px !important; */
 }
 
 /* Top Header & Brand Title */
+/* Fix Markdown Container Margin Bottom */
+div[data-testid="stMarkdownContainer"] {
+    margin-bottom: 0rem !important;
+}
+
 .mpt-brand {
     display: flex !important;
     align-items: baseline !important;
     gap: 0.65rem !important;
     margin: 0 !important;
+    margin-bottom: 0rem !important;
     padding: 0 !important;
 }
 
@@ -81,7 +89,7 @@ div[data-testid="stMainBlockContainer"] {
     text-decoration: none !important;
 }
 
-.mpt-brand > [data-testid="stHeaderActionElements"] {
+.mpt-brand>[data-testid="stHeaderActionElements"] {
     display: none !important;
 }
 
@@ -106,7 +114,7 @@ div[data-testid="stExpander"] {
 }
 
 /* Panel Header Labels */
-div[data-testid="stVerticalBlockBorderWrapper"] > div > div > p:first-child,
+div[data-testid="stVerticalBlockBorderWrapper"]>div>div>p:first-child,
 div[data-testid="stVerticalBlockBorderWrapper"] h3 {
     font-size: 1.05rem !important;
     font-weight: 700 !important;
@@ -124,7 +132,7 @@ label[data-testid="stWidgetLabel"] p {
     color: #F8FAFC !important;
 }
 
-label[data-testid="stWidgetLabel"] > div {
+label[data-testid="stWidgetLabel"]>div {
     flex: 0 0 auto !important;
     width: auto !important;
     margin-left: 0.35rem !important;
@@ -132,7 +140,7 @@ label[data-testid="stWidgetLabel"] > div {
 
 /* BaseWeb Selectboxes (FIX WHITE BACKGROUND BUG) */
 div[data-baseweb="select"],
-div[data-baseweb="select"] > div,
+div[data-baseweb="select"]>div,
 div[data-baseweb="select"] *,
 div[data-baseweb="select"] span {
     background-color: var(--mpt-bg-control) !important;
@@ -141,7 +149,7 @@ div[data-baseweb="select"] span {
     border-radius: 8px !important;
 }
 
-div[data-baseweb="select"]:focus-within > div {
+div[data-baseweb="select"]:focus-within>div {
     border-color: #6366F1 !important;
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3) !important;
 }
@@ -173,8 +181,8 @@ div[data-baseweb="textarea"]:focus-within {
 }
 
 /* Primary Action Buttons */
-.stButton > button,
-.stFormSubmitButton > button,
+.stButton>button,
+.stFormSubmitButton>button,
 button[kind="primary"] {
     background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
     color: #FFFFFF !important;
@@ -188,16 +196,16 @@ button[kind="primary"] {
     cursor: pointer !important;
 }
 
-.stButton > button p,
-.stFormSubmitButton > button p,
+.stButton>button p,
+.stFormSubmitButton>button p,
 button[kind="primary"] p {
     color: #FFFFFF !important;
     font-weight: 600 !important;
     margin: 0 !important;
 }
 
-.stButton > button:hover,
-.stFormSubmitButton > button:hover,
+.stButton>button:hover,
+.stFormSubmitButton>button:hover,
 button[kind="primary"]:hover {
     background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%) !important;
     transform: translateY(-1px) !important;
@@ -206,7 +214,7 @@ button[kind="primary"]:hover {
 
 /* Secondary Action Buttons */
 button[kind="secondary"],
-.stButton > button[kind="secondary"] {
+.stButton>button[kind="secondary"] {
     background: rgba(30, 41, 59, 0.8) !important;
     color: #F8FAFC !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -217,20 +225,20 @@ button[kind="secondary"],
 }
 
 button[kind="secondary"] p,
-.stButton > button[kind="secondary"] p {
+.stButton>button[kind="secondary"] p {
     color: #F8FAFC !important;
     font-weight: 500 !important;
 }
 
 button[kind="secondary"]:hover,
-.stButton > button[kind="secondary"]:hover {
+.stButton>button[kind="secondary"]:hover {
     background: rgba(51, 65, 85, 0.9) !important;
     border-color: #6366F1 !important;
     color: #FFFFFF !important;
 }
 
 /* Segmented Control Radio Buttons */
-div[role="radiogroup"] > button {
+div[role="radiogroup"]>button {
     background: rgba(15, 23, 42, 0.7) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: var(--mpt-text-muted) !important;
@@ -238,20 +246,20 @@ div[role="radiogroup"] > button {
     font-size: 0.85rem !important;
 }
 
-div[role="radiogroup"] > button[aria-checked="true"] {
+div[role="radiogroup"]>button[aria-checked="true"] {
     background: #4F46E5 !important;
     color: #FFFFFF !important;
     border-color: #6366F1 !important;
     box-shadow: 0 2px 10px rgba(79, 70, 229, 0.4) !important;
 }
 
-div[role="radiogroup"] > button[aria-checked="true"] p {
+div[role="radiogroup"]>button[aria-checked="true"] p {
     color: #FFFFFF !important;
     font-weight: 600 !important;
 }
 
 /* Color Pickers */
-div[data-testid="stColorPicker"] > div {
+div[data-testid="stColorPicker"]>div {
     background: var(--mpt-bg-control) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-radius: 8px !important;
@@ -300,17 +308,12 @@ div[data-testid="stPopoverBody"] {
 
 /* 2x2 Layout on Medium Screens */
 @media (min-width: 701px) and (max-width: 1100px) {
-    div[class*="st-key-main_settings_grid"]
-        > div[data-testid="stLayoutWrapper"]
-        > div[data-testid="stHorizontalBlock"] {
+    div[class*="st-key-main_settings_grid"]>div[data-testid="stLayoutWrapper"]>div[data-testid="stHorizontalBlock"] {
         flex-wrap: wrap !important;
         gap: 1rem !important;
     }
 
-    div[class*="st-key-main_settings_grid"]
-        > div[data-testid="stLayoutWrapper"]
-        > div[data-testid="stHorizontalBlock"]
-        > div[data-testid="stColumn"] {
+    div[class*="st-key-main_settings_grid"]>div[data-testid="stLayoutWrapper"]>div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"] {
         flex: 1 1 calc(50% - 0.5rem) !important;
         width: calc(50% - 0.5rem) !important;
         min-width: calc(50% - 0.5rem) !important;
