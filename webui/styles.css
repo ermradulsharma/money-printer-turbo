@@ -40,23 +40,92 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.2) !important;
 }
 
-/* Primary Action Buttons (Generate, Submit) */
-.stButton > button[kind="primary"],
-.stFormSubmitButton > button {
+/* Complete Streamlit Button Suite Overhaul */
+.stButton > button,
+.stFormSubmitButton > button,
+button[kind="primary"] {
     background: linear-gradient(135deg, #7C3AED 0%, #E11D48 100%) !important;
     color: #FFFFFF !important;
-    border: none !important;
-    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 10px !important;
+    padding: 0.55rem 1.3rem !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
-    box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4) !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
 }
 
-.stButton > button[kind="primary"]:hover,
-.stFormSubmitButton > button:hover {
+.stButton > button p,
+.stFormSubmitButton > button p,
+button[kind="primary"] p {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+.stButton > button:hover,
+.stFormSubmitButton > button:hover,
+button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #8B5CF6 0%, #F43F5E 100%) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 25px rgba(225, 29, 72, 0.6) !important;
+    box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.stButton > button:active,
+.stFormSubmitButton > button:active {
+    transform: translateY(0px) !important;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4) !important;
+}
+
+/* Secondary & Auxiliary Buttons */
+button[kind="secondary"],
+.stButton > button[kind="secondary"] {
+    background: rgba(30, 27, 75, 0.7) !important;
+    color: #F8FAFC !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 8px !important;
+    padding: 0.45rem 1rem !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s ease !important;
+}
+
+button[kind="secondary"] p,
+.stButton > button[kind="secondary"] p {
+    color: #F8FAFC !important;
+}
+
+button[kind="secondary"]:hover,
+.stButton > button[kind="secondary"]:hover {
+    background: rgba(55, 48, 163, 0.9) !important;
+    color: #FFFFFF !important;
+    border-color: #A855F7 !important;
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Segmented Control Radio Buttons */
+div[role="radiogroup"] > button {
+    background: rgba(18, 16, 40, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #CBD5E1 !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+div[role="radiogroup"] > button[aria-checked="true"] {
+    background: linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%) !important;
+    color: #FFFFFF !important;
+    border-color: #A855F7 !important;
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.45) !important;
+}
+
+div[role="radiogroup"] > button[aria-checked="true"] p {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
 }
 
 /* Styled Inputs, Selectboxes, and Text Areas */
