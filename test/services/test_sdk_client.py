@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import MagicMock, patch
 from sdk.money_printer_turbo import MoneyPrinterTurboClient
 

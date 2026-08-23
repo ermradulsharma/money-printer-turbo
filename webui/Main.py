@@ -1272,7 +1272,7 @@ def _render_brand(available_update: str | None = None):
             f"{update_label}</a>"
         )
     st.markdown(
-        f'<h1 class="mpt-brand"><span class="mpt-brand__name">Money Printer Turbo</span></h1>',
+        f'<h1 class="mpt-brand"><span class="mpt-brand__name">Money Printer Turbo</span>{update_link}</h1>',
         unsafe_allow_html=True,
     )
 

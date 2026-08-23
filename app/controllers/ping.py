@@ -1,7 +1,12 @@
 import os
 import shutil
+from pathlib import Path
 from typing import Any
+
 from fastapi import APIRouter, Request, Response
+from fastapi.responses import PlainTextResponse
+
+from app.services import state as sm
 from app.utils import utils
 
 router = APIRouter()
@@ -47,9 +52,12 @@ def deep_health_check(request: Request, response: Response) -> dict[str, Any]:
     if status == "degraded":
         response.status_code = 503
 
-from pathlib import Path
-from fastapi.responses import PlainTextResponse
-from app.services import state as sm
+    return {
+        "status": status,
+        "storage_writable": is_storage_writable,
+        "ffmpeg_available": ffmpeg_available,
+        "disk": disk_info,
+    }
 
 
 @router.get(
