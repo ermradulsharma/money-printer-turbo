@@ -115,22 +115,40 @@ Help me generate a short video with the topic "How Artificial Intelligence is Ch
 
 ---
 
-## 📖 API & CLI Reference
+## 📖 Interface Execution Commands
 
-### RESTful API (FastAPI)
-Start the API server:
+MoneyPrinterTurbo offers 3 distinct execution modes:
+
+### 1. Interactive WebUI (Streamlit) 🌐
+Start the visual dashboard in your browser (`http://127.0.0.1:8501`):
+```bash
+# Windows:
+.\webui.bat
+
+# macOS / Linux:
+sh webui.sh
+
+# Or via uv:
+uv run streamlit run webui/Main.py
+```
+> [!NOTE]
+> Do **not** run `python webui/Main.py` directly; Streamlit applications must be launched with `.\webui.bat` or `streamlit run`.
+
+### 2. Backend RESTful API (FastAPI) 🚀
+Start the API backend server (`http://127.0.0.1:8080`):
 ```bash
 uv run python main.py
 ```
-- Open Swagger Docs: `http://localhost:8080/docs`
-- Main Endpoint: `POST /v1/video/generate`
+- Interactive Swagger API Documentation: `http://127.0.0.1:8080/docs`
+- Video Generation Endpoint: `POST /v1/video/generate`
 
-### Command Line (CLI)
+### 3. Command Line Interface (CLI) 💻
+Generate videos directly from your terminal:
 ```bash
+# View all available CLI options
 uv run python cli.py --help
-```
-Generate video with options:
-```bash
+
+# Generate a video
 uv run python cli.py \
   --video-subject "Future of Renewable Energy" \
   --video-aspect "9:16" \
