@@ -2,7 +2,7 @@
 
 # 💸 MoneyPrinterTurbo
 
-### Automate Short Video Creation with AI — From Script to Final Render in Minutes
+### Automate Short Video Creation with AI — From Topic to Rendered HD Video in Minutes
 
 ![](docs/header.jpg)
 
@@ -11,7 +11,9 @@
 [![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=for-the-badge)](https://github.com/ermradulsharma/money-printer-turbo/releases)
 
-[**Quickstart**](#-quickstart) • [**Features**](#-key-features) • [**Colab Notebook**](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb) • [**Releases**](https://github.com/ermradulsharma/money-printer-turbo/releases) • [**Issues**](https://github.com/ermradulsharma/money-printer-turbo/issues)
+English | [简体中文](README-en.md) | [日本語](README-ja.md) | [Releases](https://github.com/ermradulsharma/money-printer-turbo/releases) | [Issues](https://github.com/ermradulsharma/money-printer-turbo/issues)
+
+[**Quickstart**](#-quickstart) • [**Gallery**](#-gallery) • [**Features**](#-features--supported-ecosystem) • [**System Requirements**](#-system-requirements) • [**Colab Notebook**](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
 ---
 
@@ -19,13 +21,14 @@
 
 ## 🌟 Overview
 
-**MoneyPrinterTurbo** is an all-in-one AI short video generation platform. Simply enter a **topic** or **keywords**, and it automatically handles:
-- ✍️ **AI Script Writing & Keyword Extraction**
-- 🎥 **HD Stock Footage & AI Text-to-Video Generation**
-- 🎙️ **Multi-voice Voiceover Synthesis & Subtitle Alignment**
-- 🎵 **Background Music (BGM) Mixing**
-- 🎬 **High-Definition Video Rendering** (9:16 Shorts / 16:9 Landscape)
-- 🚀 **Auto-Publishing** to TikTok, Instagram & YouTube Shorts
+**MoneyPrinterTurbo** is an all-in-one AI short video creation suite. Simply provide a **topic** or **keywords**, and it automatically orchestrates script writing, visual material acquisition, text-to-speech voiceover, subtitle alignment, background music, and HD rendering.
+
+- ✍️ **AI Scripting**: Generates multi-scene video scripts and media search prompts.
+- 🎥 **Visual Footage Engine**: Matches stock footage (Pexels, Pixabay, Coverr) or generates AI visuals (WaveSpeed / Seedance T2V).
+- 🎙️ **Voice & Subtitles**: Multi-provider TTS (Edge TTS, Azure, ElevenLabs, Fish Audio, etc.) with Whisper timestamped subtitles.
+- 🎵 **Audio Mixing**: Blends background music dynamically.
+- 🎬 **Dual Aspect Ratios**: Supports 9:16 Shorts/Reels/TikTok and 16:9 Landscape.
+- 🚀 **1-Click Auto Publishing**: Posts directly to TikTok, Instagram & YouTube Shorts.
 
 ---
 
@@ -43,17 +46,56 @@
 
 ---
 
-## ⚡ Key Features
+## 🎬 Gallery
 
-| Feature | Description |
+Sample videos generated directly with MoneyPrinterTurbo:
+
+### 📱 Vertical 9:16 (Shorts / TikTok / Reels)
+
+<table width="100%">
+<tr>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=03-zh-portrait-city-morning.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/03-zh-portrait-city-morning.jpg" width="180" alt="When the City Wakes"></a><br><strong>When the City Wakes</strong><br>14 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=05-zh-portrait-clean-energy.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/05-zh-portrait-clean-energy.jpg" width="180" alt="The Future of Clean Energy"></a><br><strong>Clean Energy Future</strong><br>24 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=07-zh-portrait-space-exploration.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/07-zh-portrait-space-exploration.jpg" width="180" alt="Space Exploration"></a><br><strong>Space Exploration</strong><br>27 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=09-en-portrait-future-robotics.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/09-en-portrait-future-robotics.jpg" width="180" alt="Everyday Robotics"></a><br><strong>Everyday Robotics</strong><br>21 sec</td>
+</tr>
+</table>
+
+### 🖥️ Horizontal 16:9 (Landscape)
+
+<table width="100%">
+<tr>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=02-zh-landscape-deep-ocean.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/02-zh-landscape-deep-ocean.jpg" width="260" alt="Light in Deep Ocean"></a><br><strong>Deep Ocean Light</strong><br>23 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=04-zh-landscape-reading-power.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/04-zh-landscape-reading-power.jpg" width="260" alt="How Reading Shapes Us"></a><br><strong>Power of Reading</strong><br>23 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=10-en-landscape-ocean-conservation.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/10-en-landscape-ocean-conservation.jpg" width="260" alt="Ocean Conservation"></a><br><strong>Ocean Conservation</strong><br>25 sec</td>
+<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=14-en-landscape-sustainable-cities.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/14-en-landscape-sustainable-cities.jpg" width="260" alt="Sustainable Cities"></a><br><strong>Sustainable Cities</strong><br>27 sec</td>
+</tr>
+</table>
+
+---
+
+## ⚡ Features & Supported Ecosystem
+
+| Category | Supported Services & Providers |
 | :--- | :--- |
-| 🤖 **4 Driving Interfaces** | Use via **AI Agent**, **WebUI (Streamlit)**, **RESTful API (FastAPI)**, or **CLI**. |
-| ✍️ **Smart Scripting** | LLM-powered script & prompt generation with auto JSON syntax repair. |
-| 🎬 **Footage Engine** | Dynamic stock footage from **Pexels**, **Pixabay**, **Coverr**, **WaveSpeed AI (Seedance)**, or **Local Uploads**. |
-| 🎙️ **Multi-Provider Voice (TTS)** | Integrates **Edge TTS**, **Azure Speech**, **SiliconFlow**, **Google Gemini**, **ElevenLabs**, **Fish Audio**, & **Chatterbox**. |
-| 🎵 **Audio & Subtitle Sync** | **Whisper (faster-whisper)** audio transcription with custom background music mixing. |
-| 📐 **Multiple Aspect Ratios** | Supports Vertical Shorts (`9:16`, `1080x1920`) and Landscape (`16:9`, `1920x1080`). |
-| 🚀 **Auto-Publishing** | Integrated **Upload-Post API** for 1-click posting to TikTok, Instagram, and YouTube Shorts. |
+| 🧠 **LLM Providers** | **Kimi / Moonshot AI**, **OpenAI (GPT-4o/5)**, **Anthropic Claude**, **Google Gemini**, **DeepSeek**, **Qwen**, **Azure OpenAI**, **ByteDance VolcEngine Ark**, **Grok**, **MiniMax**, **Ollama**, **OneAPI**, **LiteLLM**, **Groq**, **Cloudflare AI Gateway** |
+| 🎙️ **Voice Synthesis (TTS)** | **Edge TTS** (Free), **Azure Speech**, **SiliconFlow**, **Google Gemini**, **Xiaomi MiMo**, **ElevenLabs**, **Fish Audio**, **Chatterbox** |
+| 🎥 **Stock & AI Footage** | **Pexels**, **Pixabay**, **Coverr**, **WaveSpeed AI** (Seedance T2V Text-to-Video generation), **Local Video/Image Uploads** |
+| 🎵 **Audio & Subtitles** | **Whisper / faster-whisper** transcription, Edge subtitle timestamps, Custom background music mixing |
+| 📱 **Auto Publishing** | **Upload-Post API** integration for 1-click posting to TikTok, Instagram & YouTube Shorts |
+| 🛠️ **Interfaces** | **AI Agent (Skill)**, **WebUI (Streamlit)**, **RESTful API (FastAPI)**, **CLI** |
+
+---
+
+## 💻 System Requirements
+
+| Component | Minimum | Recommended | Optimal |
+| :--- | :--- | :--- | :--- |
+| **OS** | Windows 10+, macOS 11+, or Linux | Windows 11 / macOS 12+ | Linux / Windows Server |
+| **CPU** | 4 Cores | 6 - 8 Cores | 8+ Cores |
+| **RAM** | 4 GB | 8 GB | 16+ GB |
+| **GPU** | Optional (Not required) | 4 GB VRAM | 8+ GB VRAM (for fast local Whisper/video rendering) |
+| **Python** | 3.11+ | 3.11 | 3.11 |
 
 ---
 
@@ -62,19 +104,19 @@
 ### Option 1: Docker Deployment (Recommended) 🐳
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/ermradulsharma/money-printer-turbo.git
 cd MoneyPrinterTurbo
 
-# 2. Start using Docker Compose
+# Launch container
 docker compose -f docker-compose.release.yml up -d
 ```
 - 🌐 **WebUI Dashboard**: `http://localhost:8501`
-- 📖 **API Docs**: `http://localhost:8080/docs`
+- 📖 **API Documentation**: `http://localhost:8080/docs`
 
 ---
 
-### Option 2: Local Installation 📦
+### Option 2: Local Installation (uv / venv) 📦
 
 Requirements: **Python 3.11+** & **FFmpeg**
 
@@ -83,28 +125,28 @@ Requirements: **Python 3.11+** & **FFmpeg**
 git clone https://github.com/ermradulsharma/money-printer-turbo.git
 cd MoneyPrinterTurbo
 
-# 2. Create environment & install dependencies (using uv)
+# 2. Setup Python environment and dependencies with uv
 uv python install 3.11
 uv sync --frozen
 
 # 3. Launch WebUI Dashboard
-# Windows:
+# On Windows:
 .\webui.bat
-# Linux / macOS:
+# On macOS / Linux:
 sh webui.sh
 
-# 4. Or launch Backend Server
+# 4. Launch Backend API Server
 uv run python main.py
 
-# 5. Or generate via CLI
+# 5. Run via Command Line Interface (CLI)
 uv run python cli.py --video-subject "Artificial Intelligence in Daily Life"
 ```
 
 ---
 
-### Option 3: Google Colab ☁️
+### Option 3: Google Colab Notebook ☁️
 
-Run directly in your browser without local installation:
+Run directly in your browser without local setup:
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
@@ -112,24 +154,48 @@ Run directly in your browser without local installation:
 
 ### Option 4: AI Agent Integration 🤖
 
-If your AI Agent supports reading Skill definitions, send the following prompt:
+If your AI Agent supports reading Skill documents, send it the prompt below:
 
 ```text
 Use this Skill: https://raw.githubusercontent.com/ermradulsharma/money-printer-turbo/main/docs/skill/SKILL.md
-Help me generate a short video about "The Future of Space Exploration".
+Help me generate a short video with the topic "How Artificial Intelligence is Changing Daily Life".
+```
+
+---
+
+## 📖 API & CLI Reference
+
+### RESTful API (FastAPI)
+Start the API server:
+```bash
+uv run python main.py
+```
+- Open Swagger Docs: `http://localhost:8080/docs`
+- Main Endpoint: `POST /v1/video/generate`
+
+### Command Line (CLI)
+```bash
+uv run python cli.py --help
+```
+Generate video with options:
+```bash
+uv run python cli.py \
+  --video-subject "Future of Renewable Energy" \
+  --video-aspect "9:16" \
+  --voice-name "en-US-AvaNeural"
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-Copy `config.example.toml` to `config.toml` to customize your API keys and default settings:
+Copy `config.example.toml` to `config.toml` to customize your API keys and defaults:
 
 ```bash
 cp config.example.toml config.toml
 ```
 
-Edit `config.toml` to set your preferred LLM provider, TTS service, and material search API keys.
+You can set your LLM provider (`moonshot`, `openai`, `gemini`, `deepseek`, `ollama`, etc.), stock API keys (Pexels, Pixabay), and TTS configuration directly in `config.toml` or via the WebUI settings dashboard.
 
 ---
 
@@ -142,6 +208,16 @@ Edit `config.toml` to set your preferred LLM provider, TTS service, and material
 | <a href="https://platform.kimi.com"><img src="docs/sponsors/shengsuanyun-logo.jpg" alt="Kimi" width="90"></a><br>**Kimi / Moonshot** | Multimodal Kimi models powering script creation and keyword extraction. |
 | <a href="https://www.volcengine.com/"><img src="docs/sponsors/volcengine-logo.svg" alt="Volcengine" width="90"></a><br>**Volcengine** | ByteDance Volcengine sponsoring Doubao & open-source model access. |
 | <a href="https://www.ccsub.net/"><img src="docs/sponsors/ccsub-logo.png" alt="CCSub" width="90"></a><br>**CCSub** | Stable AI API relay platform supporting Claude, GPT-5, and Gemini models. |
+
+</div>
+
+---
+
+## ⭐ Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ermradulsharma/money-printer-turbo&type=Date)](https://star-history.com/#ermradulsharma/money-printer-turbo&Date)
 
 </div>
 
