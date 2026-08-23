@@ -1,0 +1,22 @@
+# Keep legacy pip install support; primary deps moved to pyproject.toml / uv.lock.
+moviepy
+streamlit
+streamlit-tour
+edge_tts
+fastapi
+uvicorn
+openai
+faster-whisper
+loguru
+google-genai
+dashscope
+azure-cognitiveservices-speech
+redis
+python-multipart
+pyyaml
+requests
+packaging
+socksio
+pydub
+audioop-lts; python_version >= "3.13"
+litellm
