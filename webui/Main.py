@@ -58,16 +58,16 @@ from app.utils.logging_utils import configure_terminal_logger
 from app.utils import utils
 
 st.set_page_config(
-    page_title="MoneyPrinterTurbo",
+    page_title="Money Printer Turbo",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
         "Report a bug": "https://github.com/ermradulsharma/money-printer-turbo/issues",
-        "About": "# MoneyPrinterTurbo\nSimply provide a topic or keyword for a video, and it will "
-        "automatically generate the video copy, video materials, video subtitles, "
-        "and video background music before synthesizing a high-definition short "
-        "video.\n\nhttps://github.com/ermradulsharma/money-printer-turbo",
+        "About": "# Money Printer Turbo\nSimply provide a topic or keyword for a video, and it will "
+                 "automatically generate the video copy, video materials, "
+                 "video subtitles, and video background music before synthesizing a "
+                 "high-definition short video.\n\nhttps://github.com/ermradulsharma/money-printer-turbo",
     },
 )
 
@@ -1272,7 +1272,7 @@ def _render_brand(available_update: str | None = None):
             f"{update_label}</a>"
         )
     st.markdown(
-        f'<h1 class="mpt-brand"><span class="mpt-brand__name">MoneyPrinterTurbo</span><a class="mpt-brand__version" href="https://github.com/ermradulsharma/money-printer-turbo" target="_blank" rel="noopener noreferrer" aria-label="Open MoneyPrinterTurbo on GitHub" title="Open project on GitHub">v{html.escape(str(config.project_version))}</a>{update_link}</h1>',
+        f'<h1 class="mpt-brand"><span class="mpt-brand__name">Money Printer Turbo</span></h1>',
         unsafe_allow_html=True,
     )
 
