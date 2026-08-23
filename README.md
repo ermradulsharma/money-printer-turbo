@@ -1,9 +1,4 @@
 <div align="center">
-
-# 💸 MoneyPrinterTurbo
-
-### Automate Short Video Creation with AI — From Topic to Rendered HD Video in Minutes
-
 ![](docs/header.jpg)
 
 [![Version](https://img.shields.io/github/v/release/ermradulsharma/money-printer-turbo?color=7c3aed&style=for-the-badge&label=version)](https://github.com/ermradulsharma/money-printer-turbo/releases)
@@ -18,9 +13,6 @@
 ---
 
 </div>
-
-## 🌟 Overview
-
 **MoneyPrinterTurbo** is an all-in-one AI short video creation suite. Simply provide a **topic** or **keywords**, and it automatically orchestrates script writing, visual material acquisition, text-to-speech voiceover, subtitle alignment, background music, and HD rendering.
 
 - ✍️ **AI Scripting**: Generates multi-scene video scripts and media search prompts.
