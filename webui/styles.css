@@ -1,50 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
 
 /* ==========================================================================
-   Design System Tokens - Linear / Vercel Ultra-Sleek Obsidian Theme
+   Design System Tokens - Obsidian Glass Cinema (Vercel & Stripe Grade)
    ========================================================================== */
 :root {
-    --mpt-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    
-    /* Colors */
-    --mpt-bg-base: #030712;
-    --mpt-bg-surface: rgba(17, 24, 39, 0.65);
-    --mpt-bg-surface-hover: rgba(31, 41, 55, 0.75);
-    --mpt-bg-input: rgba(10, 15, 29, 0.8);
-    
-    --mpt-border-subtle: rgba(255, 255, 255, 0.08);
-    --mpt-border-active: rgba(99, 102, 241, 0.5);
-    --mpt-border-hover: rgba(255, 255, 255, 0.16);
-    
+    --mpt-font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mpt-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Palette Tokens */
+    --mpt-bg-app: #060810;
+    --mpt-bg-surface: rgba(13, 17, 28, 0.72);
+    --mpt-bg-surface-hover: rgba(22, 29, 46, 0.85);
+    --mpt-bg-input: rgba(9, 12, 22, 0.85);
+
+    /* Borders */
+    --mpt-border-card: rgba(255, 255, 255, 0.08);
+    --mpt-border-glow: rgba(99, 102, 241, 0.4);
+
+    /* Accents */
     --mpt-primary: #6366F1;
     --mpt-primary-hover: #4F46E5;
-    --mpt-primary-glow: rgba(99, 102, 241, 0.35);
-    
-    --mpt-text-main: #F8FAFC;
-    --mpt-text-secondary: #94A3B8;
-    --mpt-text-muted: #64748B;
-    
-    --mpt-radius-lg: 14px;
-    --mpt-radius-md: 10px;
-    --mpt-radius-sm: 6px;
-    
-    --mpt-shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
-    --mpt-shadow-button: 0 4px 14px rgba(99, 102, 241, 0.35);
+    --mpt-accent-pink: #EC4899;
+    --mpt-accent-cyan: #06B6D4;
+
+    /* Typography */
+    --mpt-text-white: #FFFFFF;
+    --mpt-text-main: #F1F5F9;
+    --mpt-text-muted: #94A3B8;
+
+    /* Shadows & Radius */
+    --mpt-radius-card: 16px;
+    --mpt-radius-control: 10px;
+    --mpt-shadow-card: 0 12px 40px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    --mpt-shadow-cta: 0 4px 20px rgba(99, 102, 241, 0.45);
 }
 
-/* Base Reset & Background */
+/* Base Body & Canvas Background */
 html, body, .stApp {
-    font-family: var(--mpt-font) !important;
-    background-color: var(--mpt-bg-base) !important;
+    font-family: var(--mpt-font-body) !important;
+    background-color: var(--mpt-bg-app) !important;
     background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.08) 0px, transparent 50%) !important;
+        radial-gradient(at 15% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 40%),
+        radial-gradient(at 85% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%) !important;
     background-attachment: fixed !important;
     color: var(--mpt-text-main) !important;
     -webkit-font-smoothing: antialiased !important;
 }
 
-/* Hide Default Streamlit Chrome */
+/* Hide Default Streamlit Noise Elements */
 header[data-testid="stHeader"],
 div[data-testid="stToolbar"],
 div[data-testid="stDecoration"],
@@ -55,129 +59,175 @@ div[data-testid="stSkillsNudge"] {
 }
 
 div[data-testid="stMainBlockContainer"] {
-    padding-top: 1rem !important;
-    max-width: 1300px !important;
+    padding-top: 1.25rem !important;
+    padding-bottom: 2rem !important;
+    max-width: 1400px !important;
 }
 
-/* Brand Header */
+/* ==========================================================================
+   Hero Executive Brand Banner
+   ========================================================================== */
 .mpt-brand {
-    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(13, 17, 28, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--mpt-radius-card);
+    box-shadow: var(--mpt-shadow-card);
+    margin-bottom: 0.5rem;
 }
 
-.mpt-brand > span:first-child {
+.mpt-brand__logo-glow {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(236, 72, 153, 0.25));
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+}
+
+.mpt-brand__text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.mpt-brand__header-row {
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
 .mpt-brand__name {
-    font-family: var(--mpt-font) !important;
-    font-size: 2.25rem !important;
+    font-family: var(--mpt-font-heading) !important;
+    font-size: 1.85rem !important;
     font-weight: 800 !important;
-    letter-spacing: -0.03em !important;
-    background: linear-gradient(180deg, #FFFFFF 0%, #CBD5E1 100%) !important;
+    letter-spacing: -0.02em !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 40%, #A5B4FC 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 }
 
 .mpt-brand__version {
-    font-size: 0.85rem !important;
-    font-weight: 600 !important;
-    color: var(--mpt-primary) !important;
-    background: rgba(99, 102, 241, 0.12) !important;
-    border: 1px solid rgba(99, 102, 241, 0.25) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #A5B4FC !important;
+    background: rgba(99, 102, 241, 0.18) !important;
+    border: 1px solid rgba(99, 102, 241, 0.35) !important;
     padding: 0.2rem 0.6rem !important;
     border-radius: 20px !important;
     text-decoration: none !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.03em !important;
 }
 
-.mpt-brand__version:hover {
-    background: rgba(99, 102, 241, 0.2) !important;
+.mpt-brand__tagline {
+    font-size: 0.8rem !important;
+    color: var(--mpt-text-muted) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
 }
 
-/* Cards & Surface Containers */
+/* ==========================================================================
+   Obsidian Glass Containers & Panels
+   ========================================================================== */
 div[data-testid="stVerticalBlockBorderWrapper"],
 div[data-testid="stForm"],
 div[data-testid="stExpander"] {
     background: var(--mpt-bg-surface) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid var(--mpt-border-subtle) !important;
-    border-radius: var(--mpt-radius-lg) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--mpt-border-card) !important;
+    border-radius: var(--mpt-radius-card) !important;
     box-shadow: var(--mpt-shadow-card) !important;
-    transition: all 0.2s ease !important;
+    padding: 0.75rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:hover {
-    border-color: var(--mpt-border-hover) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+    box-shadow: 0 16px 45px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.15) !important;
 }
 
-/* Buttons - Senior Executive Styling */
+/* ==========================================================================
+   Primary Action CTA Buttons (Pro Gradient)
+   ========================================================================== */
 .stButton > button,
 .stFormSubmitButton > button,
 button[kind="primary"] {
-    background: linear-gradient(180deg, #6366F1 0%, #4F46E5 100%) !important;
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    border-radius: var(--mpt-radius-md) !important;
-    padding: 0.55rem 1.25rem !important;
-    font-family: var(--mpt-font) !important;
-    font-weight: 600 !important;
-    font-size: 0.9rem !important;
-    letter-spacing: -0.01em !important;
-    box-shadow: var(--mpt-shadow-button) !important;
-    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%) !important;
+    color: var(--mpt-text-white) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: var(--mpt-radius-control) !important;
+    padding: 0.65rem 1.4rem !important;
+    font-family: var(--mpt-font-heading) !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.02em !important;
+    box-shadow: var(--mpt-shadow-cta) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     cursor: pointer !important;
 }
 
 .stButton > button p,
 .stFormSubmitButton > button p,
 button[kind="primary"] p {
-    color: #FFFFFF !important;
-    font-weight: 600 !important;
+    color: var(--mpt-text-white) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
     margin: 0 !important;
 }
 
 .stButton > button:hover,
 .stFormSubmitButton > button:hover,
 button[kind="primary"]:hover {
-    background: linear-gradient(180deg, #4F46E5 0%, #4338CA 100%) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5) !important;
-    transform: translateY(-1px) !important;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #DB2777 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 30px rgba(236, 72, 153, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .stButton > button:active,
 .stFormSubmitButton > button:active {
     transform: translateY(0px) !important;
-    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3) !important;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4) !important;
 }
 
-/* Secondary Buttons */
+/* Secondary Action Buttons */
 button[kind="secondary"],
 .stButton > button[kind="secondary"] {
-    background: rgba(31, 41, 55, 0.6) !important;
+    background: rgba(22, 29, 46, 0.7) !important;
     color: var(--mpt-text-main) !important;
-    border: 1px solid var(--mpt-border-subtle) !important;
-    border-radius: var(--mpt-radius-md) !important;
-    padding: 0.45rem 1rem !important;
-    font-weight: 500 !important;
-    box-shadow: none !important;
-    transition: all 0.15s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: var(--mpt-radius-control) !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
 }
 
 button[kind="secondary"] p,
 .stButton > button[kind="secondary"] p {
     color: var(--mpt-text-main) !important;
+    font-weight: 600 !important;
 }
 
 button[kind="secondary"]:hover,
 .stButton > button[kind="secondary"]:hover {
-    background: rgba(55, 65, 81, 0.8) !important;
-    border-color: var(--mpt-border-hover) !important;
+    background: rgba(37, 48, 77, 0.9) !important;
+    border-color: rgba(99, 102, 241, 0.5) !important;
+    color: var(--mpt-text-white) !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
 }
 
-/* Inputs, Textareas & Selectboxes */
+/* ==========================================================================
+   Form Controls (Text Inputs, Textareas, Selectboxes)
+   ========================================================================== */
 div[data-baseweb="input"],
 div[data-baseweb="base-input"],
 div[data-baseweb="textarea"],
@@ -186,18 +236,20 @@ div[data-testid="stTextInput"] input,
 div[data-testid="stTextArea"] textarea,
 div[data-testid="stNumberInput"] input {
     background: var(--mpt-bg-input) !important;
-    border: 1px solid var(--mpt-border-subtle) !important;
-    border-radius: var(--mpt-radius-md) !important;
-    color: var(--mpt-text-main) !important;
-    font-family: var(--mpt-font) !important;
-    font-size: 0.9rem !important;
-    box-shadow: none !important;
-    transition: all 0.15s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: var(--mpt-radius-control) !important;
+    color: var(--mpt-text-white) !important;
+    font-family: var(--mpt-font-body) !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
 }
 
 div[data-baseweb="input"] input::placeholder,
 textarea::placeholder {
     color: var(--mpt-text-muted) !important;
+    opacity: 0.75 !important;
 }
 
 div[data-baseweb="input"]:focus-within,
@@ -207,12 +259,13 @@ div[data-baseweb="select"]:focus-within,
 div[data-testid="stTextInput"] input:focus,
 div[data-testid="stTextArea"] textarea:focus,
 div[data-testid="stNumberInput"] input:focus {
-    border-color: var(--mpt-primary) !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    background: rgba(13, 17, 32, 0.95) !important;
+    border-color: #818CF8 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
     outline: none !important;
 }
 
-/* Labels & Typography Hierarchy */
+/* High-Contrast Labels & Typography */
 label[data-testid="stWidgetLabel"] p,
 div[data-testid="stMarkdownContainer"] p,
 div[data-testid="stText"] p,
@@ -220,40 +273,41 @@ div[data-testid="stText"] p,
 span {
     color: var(--mpt-text-main) !important;
     font-size: 0.9rem !important;
-    font-weight: 500 !important;
 }
 
 label[data-testid="stWidgetLabel"] p {
     font-weight: 600 !important;
     letter-spacing: -0.01em !important;
-    color: #E2E8F0 !important;
+    color: #F8FAFC !important;
 }
 
-/* Segmented Control Radio Buttons */
+/* Segmented Control Buttons */
 div[role="radiogroup"] > button {
-    background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid var(--mpt-border-subtle) !important;
-    color: var(--mpt-text-secondary) !important;
-    border-radius: var(--mpt-radius-sm) !important;
+    background: rgba(13, 17, 28, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--mpt-text-muted) !important;
+    border-radius: 8px !important;
     font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
 }
 
 div[role="radiogroup"] > button[aria-checked="true"] {
-    background: var(--mpt-primary) !important;
-    color: #FFFFFF !important;
-    border-color: var(--mpt-primary) !important;
-    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4) !important;
+    background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%) !important;
+    color: var(--mpt-text-white) !important;
+    border-color: #818CF8 !important;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.45) !important;
 }
 
 div[role="radiogroup"] > button[aria-checked="true"] p {
-    color: #FFFFFF !important;
-    font-weight: 600 !important;
+    color: var(--mpt-text-white) !important;
+    font-weight: 700 !important;
 }
 
-/* Tabs Styling */
+/* Tabs & Dropdown Popovers */
 button[data-baseweb="tab"] {
     border-bottom: 2px solid transparent !important;
-    padding: 0.5rem 1rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
@@ -261,20 +315,21 @@ button[data-baseweb="tab"][aria-selected="true"] {
 }
 
 button[data-baseweb="tab"] p {
-    color: var(--mpt-text-secondary) !important;
+    color: var(--mpt-text-muted) !important;
+    font-weight: 500 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] p {
-    color: var(--mpt-text-main) !important;
-    font-weight: 600 !important;
+    color: var(--mpt-text-white) !important;
+    font-weight: 700 !important;
 }
 
-/* Dropdown Menu Popover */
 ul[data-baseweb="menu"],
 div[data-baseweb="popover"] {
     background-color: #0F172A !important;
-    border: 1px solid var(--mpt-border-subtle) !important;
-    border-radius: var(--mpt-radius-md) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: var(--mpt-radius-control) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
 }
 
 ul[data-baseweb="menu"] li {
@@ -283,6 +338,6 @@ ul[data-baseweb="menu"] li {
 }
 
 ul[data-baseweb="menu"] li:hover {
-    background-color: rgba(99, 102, 241, 0.15) !important;
-    color: #FFFFFF !important;
+    background-color: rgba(99, 102, 241, 0.2) !important;
+    color: var(--mpt-text-white) !important;
 }
