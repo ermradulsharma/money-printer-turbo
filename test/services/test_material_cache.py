@@ -152,7 +152,7 @@ class TestMaterialSearchCache(unittest.TestCase):
         cache_path = self._cache_path()
         cache_path.write_text("{invalid-json", encoding="utf-8")
 
-        with patch("app.services.material_cache.logger.warning") as warning:
+        with patch.object(material_cache.logger, "warning") as warning:
             loaded = material_cache.load_material_search_cache(
                 provider="pixabay",
                 search_term="nature",

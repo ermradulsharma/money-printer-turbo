@@ -47,10 +47,61 @@ def deep_health_check(request: Request, response: Response) -> dict[str, Any]:
     if status == "degraded":
         response.status_code = 503
 
-    return {
-        "status": status,
-        "ffmpeg": ffmpeg_available,
-        "storage_writable": is_storage_writable,
-        "disk": disk_info,
-    }
+from pathlib import Path
+from fastapi.responses import PlainTextResponse
+from app.services import state as sm
+
+
+@router.get(
+    "/metrics",
+    tags=["Metrics"],
+    description="Prometheus text metrics export",
+    response_class=PlainTextResponse,
+)
+def prometheus_metrics(request: Request) -> str:
+    ffmpeg_val = 1
+    try:
+        utils.check_ffmpeg()
+    except Exception:
+        ffmpeg_val = 0
+
+    storage_bytes = 0
+    try:
+        storage_path = Path(utils.storage_dir())
+        if storage_path.exists():
+            storage_bytes = sum(
+                f.stat().st_size for f in storage_path.rglob("*") if f.is_file()
+            )
+    except Exception:
+        pass
+
+    tasks, total_tasks = sm.state.get_all_tasks(1, 1000)
+    completed_tasks = sum(
+        1 for t in tasks if t.get("state") == 1 or t.get("status") == "completed"
+    )
+    failed_tasks = sum(
+        1 for t in tasks if t.get("state") == 2 or t.get("status") == "failed"
+    )
+    running_tasks = sum(
+        1 for t in tasks if t.get("state") == 0 or t.get("status") in {"processing", "running"}
+    )
+
+    metrics = [
+        "# HELP mpt_ffmpeg_available Indicates if FFmpeg binary is accessible (1) or missing (0).",
+        "# TYPE mpt_ffmpeg_available gauge",
+        f"mpt_ffmpeg_available {ffmpeg_val}",
+        "# HELP mpt_storage_bytes_used Total storage directory usage in bytes.",
+        "# TYPE mpt_storage_bytes_used gauge",
+        f"mpt_storage_bytes_used {storage_bytes}",
+        "# HELP mpt_tasks_total Total count of tracked video generation tasks.",
+        "# TYPE mpt_tasks_total counter",
+        f"mpt_tasks_total {total_tasks}",
+        "# HELP mpt_tasks_by_status Breakdown of video generation tasks by status.",
+        "# TYPE mpt_tasks_by_status gauge",
+        f'mpt_tasks_by_status{{status="completed"}} {completed_tasks}',
+        f'mpt_tasks_by_status{{status="failed"}} {failed_tasks}',
+        f'mpt_tasks_by_status{{status="running"}} {running_tasks}',
+    ]
+    return "\n".join(metrics) + "\n"
+
 

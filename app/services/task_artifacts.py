@@ -116,3 +116,57 @@ def clean_expired_task_artifacts(max_age_hours: int = 24) -> int:
         )
 
     return deleted_count
+
+
+def enforce_storage_quota(max_storage_gb: float = 20.0) -> int:
+    """
+    Ensure the total size of the storage directory does not exceed ``max_storage_gb``.
+    Purges oldest task artifact directories first until storage is within limit.
+    Returns the count of purged directories.
+    """
+    import shutil
+
+    storage_root = Path(utils.storage_dir())
+    if not storage_root.exists() or max_storage_gb <= 0:
+        return 0
+
+    max_bytes = int(max_storage_gb * (1024 ** 3))
+
+    def get_dir_size(path: Path) -> int:
+        return sum(f.stat().st_size for f in path.rglob("*") if f.is_file())
+
+    total_bytes = get_dir_size(storage_root)
+    if total_bytes <= max_bytes:
+        return 0
+
+    task_root = Path(utils.task_dir())
+    if not task_root.exists():
+        return 0
+
+    task_dirs = []
+    for d in task_root.iterdir():
+        if d.is_dir():
+            try:
+                task_dirs.append((d.stat().st_mtime, d))
+            except Exception:
+                pass
+    task_dirs.sort(key=lambda x: x[0])
+
+    purged_count = 0
+    for _, d in task_dirs:
+        if total_bytes <= max_bytes:
+            break
+        dir_size = get_dir_size(d)
+        try:
+            shutil.rmtree(d, ignore_errors=True)
+            total_bytes -= dir_size
+            purged_count += 1
+        except Exception as exc:
+            logger.warning(f"failed to purge task dir for quota {d}: {exc}")
+
+    if purged_count > 0:
+        logger.info(
+            f"purged {purged_count} task artifact directories to enforce storage quota of {max_storage_gb}GB"
+        )
+    return purged_count
+
