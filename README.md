@@ -32,48 +32,6 @@
 
 ---
 
-## 🖥️ User Interfaces
-
-<div align="center">
-
-### Interactive WebUI Dashboard
-![](docs/webui.jpg)
-
-### RESTful API Documentation (FastAPI)
-![](docs/api.jpg)
-
-</div>
-
----
-
-## 🎬 Gallery
-
-Sample videos generated directly with MoneyPrinterTurbo:
-
-### 📱 Vertical 9:16 (Shorts / TikTok / Reels)
-
-<table width="100%">
-<tr>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=03-zh-portrait-city-morning.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/03-zh-portrait-city-morning.jpg" width="180" alt="When the City Wakes"></a><br><strong>When the City Wakes</strong><br>14 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=05-zh-portrait-clean-energy.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/05-zh-portrait-clean-energy.jpg" width="180" alt="The Future of Clean Energy"></a><br><strong>Clean Energy Future</strong><br>24 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=07-zh-portrait-space-exploration.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/07-zh-portrait-space-exploration.jpg" width="180" alt="Space Exploration"></a><br><strong>Space Exploration</strong><br>27 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=09-en-portrait-future-robotics.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/09-en-portrait-future-robotics.jpg" width="180" alt="Everyday Robotics"></a><br><strong>Everyday Robotics</strong><br>21 sec</td>
-</tr>
-</table>
-
-### 🖥️ Horizontal 16:9 (Landscape)
-
-<table width="100%">
-<tr>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=02-zh-landscape-deep-ocean.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/02-zh-landscape-deep-ocean.jpg" width="260" alt="Light in Deep Ocean"></a><br><strong>Deep Ocean Light</strong><br>23 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=04-zh-landscape-reading-power.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/04-zh-landscape-reading-power.jpg" width="260" alt="How Reading Shapes Us"></a><br><strong>Power of Reading</strong><br>23 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=10-en-landscape-ocean-conservation.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/10-en-landscape-ocean-conservation.jpg" width="260" alt="Ocean Conservation"></a><br><strong>Ocean Conservation</strong><br>25 sec</td>
-<td align="center" width="25%"><a href="https://harry0703.github.io/mpt-assets/?video=14-en-landscape-sustainable-cities.mp4"><img src="https://github.com/harry0703/mpt-assets/releases/download/assets/14-en-landscape-sustainable-cities.jpg" width="260" alt="Sustainable Cities"></a><br><strong>Sustainable Cities</strong><br>27 sec</td>
-</tr>
-</table>
-
----
-
 ## ⚡ Features & Supported Ecosystem
 
 | Category | Supported Services & Providers |
@@ -196,30 +154,6 @@ cp config.example.toml config.toml
 ```
 
 You can set your LLM provider (`moonshot`, `openai`, `gemini`, `deepseek`, `ollama`, etc.), stock API keys (Pexels, Pixabay), and TTS configuration directly in `config.toml` or via the WebUI settings dashboard.
-
----
-
-## ❤️ Special Thanks & Sponsors
-
-<div align="center">
-
-| Sponsor | Description |
-| :---: | :--- |
-| <a href="https://platform.kimi.com"><img src="docs/sponsors/shengsuanyun-logo.jpg" alt="Kimi" width="90"></a><br>**Kimi / Moonshot** | Multimodal Kimi models powering script creation and keyword extraction. |
-| <a href="https://www.volcengine.com/"><img src="docs/sponsors/volcengine-logo.svg" alt="Volcengine" width="90"></a><br>**Volcengine** | ByteDance Volcengine sponsoring Doubao & open-source model access. |
-| <a href="https://www.ccsub.net/"><img src="docs/sponsors/ccsub-logo.png" alt="CCSub" width="90"></a><br>**CCSub** | Stable AI API relay platform supporting Claude, GPT-5, and Gemini models. |
-
-</div>
-
----
-
-## ⭐ Star History
-
-<div align="center">
-
-[![Star History Chart](https://api.star-history.com/svg?repos=ermradulsharma/money-printer-turbo&type=Date)](https://star-history.com/#ermradulsharma/money-printer-turbo&Date)
-
-</div>
 
 ---
 
