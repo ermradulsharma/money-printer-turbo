@@ -1,4 +1,3 @@
-import json
 import os.path
 import re
 from timeit import default_timer as timer
