@@ -13,7 +13,7 @@
 
 [**Documentation**](README.md) • [**Releases**](https://github.com/ermradulsharma/money-printer-turbo/releases) • [**Issues**](https://github.com/ermradulsharma/money-printer-turbo/issues)
 
-[**Quickstart**](#-quickstart) • [**Gallery**](#-gallery) • [**Features**](#-features--supported-ecosystem) • [**System Requirements**](#-system-requirements) • [**Colab Notebook**](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb)
+[**Quickstart**](#-quickstart) • [**Features**](#-features--supported-ecosystem) • [**System Requirements**](#-system-requirements) • [**API & CLI**](#-api--cli-reference) • [**Colab Notebook**](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
 ---
 
