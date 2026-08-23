@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=for-the-badge)](https://github.com/ermradulsharma/money-printer-turbo/releases)
 
-English | [简体中文](README-en.md) | [日本語](README-ja.md) | [Releases](https://github.com/ermradulsharma/money-printer-turbo/releases) | [Issues](https://github.com/ermradulsharma/money-printer-turbo/issues)
+[**Documentation**](README.md) • [**Releases**](https://github.com/ermradulsharma/money-printer-turbo/releases) • [**Issues**](https://github.com/ermradulsharma/money-printer-turbo/issues)
 
 [**Quickstart**](#-quickstart) • [**Gallery**](#-gallery) • [**Features**](#-features--supported-ecosystem) • [**System Requirements**](#-system-requirements) • [**Colab Notebook**](https://colab.research.google.com/github/ermradulsharma/money-printer-turbo/blob/main/docs/MoneyPrinterTurbo.ipynb)
 
