@@ -46,10 +46,9 @@ dist/
 /storage/
 /models/
 ./models/*
-resource/fonts/*.ttc
+resource/fonts/STHeiti*.ttc
 resource/songs/
 public/songs/
-*.ttc
 *.mp3
 *.mp4
 *.wav

@@ -957,6 +957,12 @@ class TestVideoService(unittest.TestCase):
         try:
             font_path = os.path.join(utils.font_dir(), "STHeitiMedium.ttc")
             if not os.path.exists(font_path):
+                font_path = os.path.join(utils.font_dir(), "MicrosoftYaHeiNormal.ttc")
+            if not os.path.exists(font_path) and os.path.exists(utils.font_dir()):
+                available = [os.path.join(utils.font_dir(), f) for f in os.listdir(utils.font_dir()) if f.lower().endswith((".ttc", ".ttf"))]
+                if available:
+                    font_path = available[0]
+            if not os.path.exists(font_path):
                 self.fail(f"font file not found: {font_path}")
                 
             # test english text wrapping

@@ -638,6 +638,16 @@ def _resolve_managed_resource_file(
             resolved_path, resource_dir
         ):
             return resolved_path
+
+    if description == "subtitle font" and os.path.exists(resource_dir):
+        for f in os.listdir(resource_dir):
+            if f.lower().endswith((".ttf", ".ttc")):
+                candidate = os.path.realpath(os.path.join(resource_dir, f))
+                if os.path.isfile(candidate) and _path_is_within_directory(
+                    candidate, resource_dir
+                ):
+                    return candidate
+
     raise ValueError(
         f"{description} file must exist inside {resource_dir}: {raw_path}"
     )

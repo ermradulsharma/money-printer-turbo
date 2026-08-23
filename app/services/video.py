@@ -747,7 +747,22 @@ def combine_videos(
 
 
 def wrap_text(text, max_width, font="Arial", fontsize=60):
-    font = ImageFont.truetype(font, fontsize)
+    try:
+        font_obj = ImageFont.truetype(font, fontsize)
+    except OSError:
+        font_obj = None
+        if os.path.exists(utils.font_dir()):
+            for f in os.listdir(utils.font_dir()):
+                if f.lower().endswith((".ttc", ".ttf")):
+                    candidate = os.path.join(utils.font_dir(), f)
+                    try:
+                        font_obj = ImageFont.truetype(candidate, fontsize)
+                        break
+                    except OSError:
+                        continue
+        if font_obj is None:
+            font_obj = ImageFont.load_default()
+    font = font_obj
     max_width = int(max_width)
 
     ascent, descent = font.getmetrics()
@@ -979,6 +994,14 @@ def generate_video(
         if not params.font_name:
             params.font_name = "STHeitiMedium.ttc"
         font_path = os.path.join(utils.font_dir(), params.font_name)
+        if not os.path.isfile(font_path) and os.path.exists(utils.font_dir()):
+            for f in os.listdir(utils.font_dir()):
+                if f.lower().endswith((".ttc", ".ttf")):
+                    candidate = os.path.join(utils.font_dir(), f)
+                    if os.path.isfile(candidate):
+                        font_path = candidate
+                        params.font_name = f
+                        break
         if os.name == "nt":
             font_path = font_path.replace("\\", "/")
 
