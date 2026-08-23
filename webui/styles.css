@@ -128,19 +128,51 @@ div[role="radiogroup"] > button[aria-checked="true"] p {
     font-weight: 600 !important;
 }
 
-/* Styled Inputs, Selectboxes, and Text Areas */
+/* Input Fields, Text Areas, Number Inputs, & Select Boxes Overhaul */
 div[data-baseweb="input"],
-div[data-baseweb="select"] > div {
-    background: rgba(15, 15, 35, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 8px !important;
+div[data-baseweb="base-input"],
+div[data-baseweb="textarea"],
+div[data-baseweb="select"] > div,
+div[data-testid="stTextInput"] input,
+div[data-testid="stTextArea"] textarea,
+div[data-testid="stNumberInput"] input {
+    background: rgba(15, 14, 35, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 10px !important;
     color: #F8FAFC !important;
+    font-family: var(--mpt-font-body) !important;
+    font-size: 0.95rem !important;
+    padding: 0.25rem 0.5rem !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
+/* Input Placeholder Text */
+div[data-baseweb="input"] input::placeholder,
+textarea::placeholder {
+    color: #94A3B8 !important;
+    opacity: 0.8 !important;
+}
+
+/* Input Focus Glow & Border Highlight */
 div[data-baseweb="input"]:focus-within,
-div[data-baseweb="select"]:focus-within {
+div[data-baseweb="base-input"]:focus-within,
+div[data-baseweb="textarea"]:focus-within,
+div[data-baseweb="select"]:focus-within,
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stTextArea"] textarea:focus,
+div[data-testid="stNumberInput"] input:focus {
+    background: rgba(22, 20, 50, 0.9) !important;
     border-color: #A855F7 !important;
-    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3) !important;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    outline: none !important;
+}
+
+/* Hover State */
+div[data-baseweb="input"]:hover,
+div[data-baseweb="textarea"]:hover,
+div[data-baseweb="select"] > div:hover {
+    border-color: rgba(168, 85, 247, 0.4) !important;
 }
 
 /* High-Contrast Text Overrides for Maximum Readability */
