@@ -1,4 +1,5 @@
 <div align="center">
+
 ![](docs/header.jpg)
 
 [![Version](https://img.shields.io/github/v/release/ermradulsharma/money-printer-turbo?color=7c3aed&style=for-the-badge&label=version)](https://github.com/ermradulsharma/money-printer-turbo/releases)
