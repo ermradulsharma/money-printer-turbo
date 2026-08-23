@@ -1,3 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
+
+/* Glassmorphism & Cinema Dark Palette Tokens */
+:root {
+    --mpt-font-heading: 'Outfit', sans-serif;
+    --mpt-font-body: 'Inter', sans-serif;
+    --mpt-bg-main: #0A0A14;
+    --mpt-glass-bg: rgba(22, 20, 48, 0.55);
+    --mpt-glass-border: rgba(255, 255, 255, 0.1);
+    --mpt-glass-hover: rgba(40, 36, 85, 0.7);
+    --mpt-accent-purple: #7C3AED;
+    --mpt-accent-pink: #E11D48;
+    --mpt-text-bright: #F8FAFC;
+    --mpt-text-muted: #94A3B8;
+}
+
+/* Page Body & App Background */
+.stApp {
+    font-family: var(--mpt-font-body) !important;
+    background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0a0a14 70%) !important;
+    background-attachment: fixed !important;
+    color: var(--mpt-text-bright) !important;
+}
+
+/* Glassmorphic Container Cards */
+div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stForm"],
+div[data-testid="stExpander"] {
+    background: var(--mpt-glass-bg) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--mpt-glass-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    border-color: rgba(168, 85, 247, 0.3) !important;
+    box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.2) !important;
+}
+
+/* Primary Action Buttons (Generate, Submit) */
+.stButton > button[kind="primary"],
+.stFormSubmitButton > button {
+    background: linear-gradient(135deg, #7C3AED 0%, #E11D48 100%) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.stButton > button[kind="primary"]:hover,
+.stFormSubmitButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 25px rgba(225, 29, 72, 0.6) !important;
+}
+
+/* Styled Inputs, Selectboxes, and Text Areas */
+div[data-baseweb="input"],
+div[data-baseweb="select"] > div {
+    background: rgba(15, 15, 35, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 8px !important;
+    color: #F8FAFC !important;
+}
+
+div[data-baseweb="input"]:focus-within,
+div[data-baseweb="select"]:focus-within {
+    border-color: #A855F7 !important;
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3) !important;
+}
+
 header[data-testid="stHeader"],
 div[data-testid="stToolbar"],
 div[data-testid="stDecoration"],
