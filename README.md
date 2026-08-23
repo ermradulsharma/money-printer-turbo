@@ -137,6 +137,29 @@ uv run python cli.py \
   --voice-name "en-US-AvaNeural"
 ```
 
+### 🐍 Python Client SDK
+Trigger video generation programmatically in Python:
+```python
+from sdk.money_printer_turbo import MoneyPrinterTurboClient
+
+client = MoneyPrinterTurboClient(base_url="http://localhost:8080")
+
+# 1. Start video generation task
+task = client.generate_video(
+    video_subject="Future of Renewable Energy",
+    video_aspect="9:16",
+    voice_name="en-US-AvaNeural"
+)
+
+# 2. Wait for completion
+result = client.wait_for_completion(task["data"]["task_id"])
+print("Video generated successfully:", result)
+```
+
+### 📊 Health Check & Prometheus Metrics
+- **Deep Health Diagnostics**: `GET /health/deep` (FFmpeg availability, storage permissions, disk space)
+- **Prometheus Metrics**: `GET /metrics` (Task counters, active queue depth, storage byte usage)
+
 ---
 
 ## ⚙️ Configuration
