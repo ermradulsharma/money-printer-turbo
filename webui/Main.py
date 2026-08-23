@@ -1272,24 +1272,7 @@ def _render_brand(available_update: str | None = None):
             f"{update_label}</a>"
         )
     st.markdown(
-        f"""
-        <div class="mpt-brand">
-            <div class="mpt-brand__logo-glow">⚡</div>
-            <div class="mpt-brand__text-group">
-                <div class="mpt-brand__header-row">
-                    <span class="mpt-brand__name">MoneyPrinterTurbo</span>
-                    <a class="mpt-brand__version"
-                       href="https://github.com/ermradulsharma/money-printer-turbo"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="Open MoneyPrinterTurbo on GitHub"
-                       title="Open project on GitHub">v{html.escape(str(config.project_version))}</a>
-                    {update_link}
-                </div>
-                <span class="mpt-brand__tagline">Autonomous AI Short Video Creation Suite</span>
-            </div>
-        </div>
-        """,
+        f'<h1 class="mpt-brand"><span class="mpt-brand__name">MoneyPrinterTurbo</span><a class="mpt-brand__version" href="https://github.com/ermradulsharma/money-printer-turbo" target="_blank" rel="noopener noreferrer" aria-label="Open MoneyPrinterTurbo on GitHub" title="Open project on GitHub">v{html.escape(str(config.project_version))}</a>{update_link}</h1>',
         unsafe_allow_html=True,
     )
 
