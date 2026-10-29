@@ -1,6 +1,7 @@
 import glob
 import os
 import pathlib
+import re
 import shutil
 from typing import Union
 
@@ -71,9 +72,13 @@ def _sanitize_upload_filename(filename: str, request_id: str) -> str:
     return normalized_name
 
 
-def _resolve_path_within_directory(base_dir: str, unsafe_path: str, request_id: str) -> str:
+def _resolve_path_within_directory(
+    base_dir: str, unsafe_path: str, request_id: str, *, require_file: bool = True
+) -> str:
     try:
-        return file_security.resolve_path_within_directory(base_dir, unsafe_path)
+        return file_security.resolve_path_within_directory(
+            base_dir, unsafe_path, require_file=require_file
+        )
     except ValueError as exc:
         logger.warning(
             f"reject unsafe file path, request_id: {request_id}, path: {unsafe_path}, "
@@ -276,6 +281,12 @@ def get_task(
 )
 def delete_video(request: Request, task_id: str = Path(..., description="Task ID")):
     request_id = base.get_task_id(request)
+    if not task_id or not re.match(r"^[a-zA-Z0-9_-]+$", task_id):
+        raise HttpException(
+            task_id=request_id,
+            status_code=400,
+            message=f"{request_id}: invalid task_id",
+        )
     task = sm.state.get_task(task_id)
     if task:
         if tm.is_task_busy(task):
@@ -291,8 +302,10 @@ def delete_video(request: Request, task_id: str = Path(..., description="Task ID
             )
 
         tasks_dir = utils.task_dir()
-        current_task_dir = os.path.join(tasks_dir, task_id)
-        if os.path.exists(current_task_dir):
+        current_task_dir = _resolve_path_within_directory(
+            tasks_dir, task_id, request_id, require_file=False
+        )
+        if os.path.exists(current_task_dir) and os.path.isdir(current_task_dir):
             shutil.rmtree(current_task_dir)
 
         sm.state.delete_task(task_id)
@@ -436,8 +449,8 @@ async def stream_video(request: Request, file_path: str):
     start, end = _parse_byte_range(range_header, video_size, request_id)
     length = end - start + 1
 
-    def file_iterator(file_path, offset=0, bytes_to_read=None):
-        with open(file_path, "rb") as f:
+    def file_iterator(stream_path, offset=0, bytes_to_read=None):
+        with open(stream_path, "rb") as f:
             f.seek(offset, os.SEEK_SET)
             remaining = bytes_to_read or video_size
             while remaining > 0:

@@ -778,8 +778,21 @@ def wrap_text(text, max_width, font="Arial", fontsize=60):
         inner_text = inner_text.strip()
         if not inner_text:
             return 0, line_height
-        left, top, right, bottom = font.getbbox(inner_text)
-        return right - left, line_height
+        if "\n" in inner_text:
+            max_w = 0
+            for line in inner_text.split("\n"):
+                w, _ = get_text_size(line)
+                if w > max_w:
+                    max_w = w
+            return max_w, line_height
+        try:
+            left, top, right, bottom = font.getbbox(inner_text)
+            return right - left, line_height
+        except (RuntimeError, OSError):
+            try:
+                return int(font.getlength(inner_text)), line_height
+            except Exception:
+                return len(inner_text) * int(fontsize * 0.6), line_height
 
     width, height = get_text_size(text)
     if width <= max_width:

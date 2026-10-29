@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     name: Python ${{ matrix.python-version }} tests
@@ -51,22 +54,22 @@ jobs:
         run: uv sync --frozen --python ${{ matrix.python-version }}
 
       - name: Compile Python sources
-        run: uv run --no-sync python -m compileall app cli.py main.py webui test
+        run: uv run --no-sync --python ${{ matrix.python-version }} python -m compileall app cli.py main.py webui test
 
       - name: Lint Python sources
         if: matrix.python-version == '3.11'
-        run: uv run --no-sync ruff check app cli.py main.py webui test
+        run: uv run --no-sync --python ${{ matrix.python-version }} ruff check app cli.py main.py webui test
 
       - name: Run unit tests with coverage
         # pytest 兼容现有 unittest.TestCase，同时会收集仓库中的 pytest 风格
         # 测试，避免测试文件已存在但 CI 没有真正执行。
-        run: uv run --no-sync python -X utf8 -m coverage run -m pytest -q test
+        run: uv run --no-sync --python ${{ matrix.python-version }} python -X utf8 -m coverage run -m pytest -q test
 
       - name: Report test coverage
-        run: uv run --no-sync python -m coverage report
+        run: uv run --no-sync --python ${{ matrix.python-version }} python -m coverage report
 
       - name: Export coverage report
-        run: uv run --no-sync python -m coverage xml
+        run: uv run --no-sync --python ${{ matrix.python-version }} python -m coverage xml
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4

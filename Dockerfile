@@ -1,5 +1,5 @@
 # Stage 1: Builder
-FROM python:3.11-slim-bullseye AS builder
+FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /build
 
@@ -17,7 +17,7 @@ RUN if [ "$PIP_USE_OFFICIAL" = "1" ]; then \
     fi
 
 # Stage 2: Final Runtime
-FROM python:3.11-slim-bullseye AS runtime
+FROM python:3.11-slim-bookworm AS runtime
 
 WORKDIR /MoneyPrinterTurbo
 
@@ -29,11 +29,16 @@ ARG DOCKER_BUILD_MIRROR=china
 
 # Install system dependencies (ffmpeg & git)
 RUN set -u; \
+    suite=$(. /etc/os-release 2>/dev/null && echo "$VERSION_CODENAME" || echo "bookworm"); \
+    [ -n "$suite" ] || suite="bookworm"; \
     write_debian_sources() { \
         main_url="$1"; \
         security_url="$2"; \
-        printf 'deb %s bullseye main\ndeb %s bullseye-updates main\ndeb %s bullseye-security main\n' \
-            "$main_url" "$main_url" "$security_url" > /etc/apt/sources.list; \
+        rm -f /etc/apt/sources.list.d/debian.sources; \
+        printf 'deb %s %s main\ndeb %s %s-updates main\ndeb %s %s-security main\n' \
+            "$main_url" "$suite" \
+            "$main_url" "$suite" \
+            "$security_url" "$suite" > /etc/apt/sources.list; \
         rm -rf /var/lib/apt/lists/*; \
     }; \
     install_system_dependencies() { \
@@ -78,12 +83,15 @@ RUN set -u; \
         fi; \
     else \
         echo "Using default Debian mirrors"; \
-        write_debian_sources \
-            "https://deb.debian.org/debian" \
-            "https://deb.debian.org/debian-security"; \
         if ! retry_system_dependencies; then \
-            echo "Failed to install system dependencies from the default Debian mirror" >&2; \
-            exit 1; \
+            echo "Default Debian mirror retry failed, attempting fallback sources" >&2; \
+            write_debian_sources \
+                "https://deb.debian.org/debian" \
+                "https://deb.debian.org/debian-security"; \
+            if ! install_system_dependencies; then \
+                echo "Failed to install system dependencies from the default Debian mirror" >&2; \
+                exit 1; \
+            fi; \
         fi; \
     fi; \
     rm -rf /var/lib/apt/lists/*
