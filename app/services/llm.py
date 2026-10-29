@@ -89,7 +89,10 @@ def _extract_chat_completion_text(response, llm_provider: str) -> str:
     try:
         return _normalize_text_response(content, llm_provider)
     except (ValueError, TypeError) as exc:
-        return f"Error: {exc}"
+        logger.warning(
+            f"failed to normalize chat completion content for provider [{llm_provider}]: {exc}"
+        )
+        return f"Error: [{llm_provider}] invalid response format"
 
 
 def _get_response_field(value, key: str):
@@ -126,13 +129,15 @@ def _extract_qwen_generation_text(response) -> str:
             try:
                 return _normalize_text_response(content, "qwen")
             except (ValueError, TypeError) as exc:
-                return f"Error: {exc}"
+                logger.warning(f"failed to normalize qwen message content: {exc}")
+                return "Error: [qwen] invalid response format"
 
     text = _get_response_field(output, "text") if output else None
     try:
         return _normalize_text_response(text, "qwen")
     except (ValueError, TypeError) as exc:
-        return f"Error: {exc}"
+        logger.warning(f"failed to normalize qwen output text: {exc}")
+        return "Error: [qwen] invalid response format"
 
 
 def _generate_response(prompt: str, app_config=None) -> str:
