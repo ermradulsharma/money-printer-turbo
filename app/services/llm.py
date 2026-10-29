@@ -88,7 +88,14 @@ def _extract_chat_completion_text(response, llm_provider: str) -> str:
     content = getattr(message, "content", None)
     try:
         return _normalize_text_response(content, llm_provider)
-    except (ValueError, TypeError) as exc:
+    except ValueError as exc:
+        logger.warning(
+            f"failed to normalize chat completion content for provider [{llm_provider}]: {exc}"
+        )
+        if "empty text content" in str(exc):
+            return f"Error: [{llm_provider}] returned empty text content"
+        return f"Error: [{llm_provider}] invalid response format"
+    except TypeError as exc:
         logger.warning(
             f"failed to normalize chat completion content for provider [{llm_provider}]: {exc}"
         )
@@ -128,14 +135,24 @@ def _extract_qwen_generation_text(response) -> str:
         if content is not None:
             try:
                 return _normalize_text_response(content, "qwen")
-            except (ValueError, TypeError) as exc:
+            except ValueError as exc:
+                logger.warning(f"failed to normalize qwen message content: {exc}")
+                if "empty text content" in str(exc):
+                    return "Error: [qwen] returned empty text content"
+                return "Error: [qwen] invalid response format"
+            except TypeError as exc:
                 logger.warning(f"failed to normalize qwen message content: {exc}")
                 return "Error: [qwen] invalid response format"
 
     text = _get_response_field(output, "text") if output else None
     try:
         return _normalize_text_response(text, "qwen")
-    except (ValueError, TypeError) as exc:
+    except ValueError as exc:
+        logger.warning(f"failed to normalize qwen output text: {exc}")
+        if "empty text content" in str(exc):
+            return "Error: [qwen] returned empty text content"
+        return "Error: [qwen] invalid response format"
+    except TypeError as exc:
         logger.warning(f"failed to normalize qwen output text: {exc}")
         return "Error: [qwen] invalid response format"
 
