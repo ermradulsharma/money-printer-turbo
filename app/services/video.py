@@ -790,10 +790,7 @@ def wrap_text(text, max_width, font="Arial", fontsize=60):
             return right - left, line_height
         except (RuntimeError, OSError):
             try:
-                left, top, right, bottom = font.getbbox(
-                    inner_text, layout_engine=ImageFont.Layout.BASIC
-                )
-                return right - left, line_height
+                return int(font.getlength(inner_text)), line_height
             except Exception:
                 return len(inner_text) * int(fontsize * 0.6), line_height
 
