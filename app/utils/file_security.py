@@ -11,8 +11,10 @@ def resolve_path_within_directory(
         raise ValueError("empty path is not allowed")
 
     base_dir_real = os.path.realpath(base_dir)
-    rel_path = unsafe_path.lstrip("/\\")
-    candidate_path = os.path.join(base_dir_real, rel_path)
+    if os.path.isabs(unsafe_path):
+        candidate_path = unsafe_path
+    else:
+        candidate_path = os.path.join(base_dir_real, unsafe_path)
     resolved_path = os.path.realpath(candidate_path)
 
     allowed_prefix = (
