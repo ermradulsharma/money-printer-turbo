@@ -78,15 +78,18 @@ def _sanitize_error_message(error: object) -> str:
 def _extract_chat_completion_text(response, llm_provider: str) -> str:
     choices = getattr(response, "choices", None)
     if not choices:
-        raise ValueError(f"[{llm_provider}] returned empty choices")
+        return f"Error: [{llm_provider}] returned empty choices"
 
     first_choice = choices[0]
     message = getattr(first_choice, "message", None)
     if message is None:
-        raise ValueError(f"[{llm_provider}] returned empty message")
+        return f"Error: [{llm_provider}] returned empty message"
 
     content = getattr(message, "content", None)
-    return _normalize_text_response(content, llm_provider)
+    try:
+        return _normalize_text_response(content, llm_provider)
+    except (ValueError, TypeError) as exc:
+        return f"Error: {exc}"
 
 
 def _get_response_field(value, key: str):
@@ -114,16 +117,22 @@ def _extract_qwen_generation_text(response) -> str:
     if choices is not None:
         if not choices:
             logger.warning("Qwen returned an empty choices list")
-            raise ValueError("[qwen] returned empty choices")
+            return "Error: [qwen] returned empty choices"
 
         first_choice = choices[0]
         message = _get_response_field(first_choice, "message")
         content = _get_response_field(message, "content") if message else None
         if content is not None:
-            return _normalize_text_response(content, "qwen")
+            try:
+                return _normalize_text_response(content, "qwen")
+            except (ValueError, TypeError) as exc:
+                return f"Error: {exc}"
 
     text = _get_response_field(output, "text") if output else None
-    return _normalize_text_response(text, "qwen")
+    try:
+        return _normalize_text_response(text, "qwen")
+    except (ValueError, TypeError) as exc:
+        return f"Error: {exc}"
 
 
 def _generate_response(prompt: str, app_config=None) -> str:
@@ -134,7 +143,7 @@ def _generate_response(prompt: str, app_config=None) -> str:
         ).lower()
         provider = get_llm_provider(llm_provider)
         if provider is None:
-            raise ValueError(f"{llm_provider}: unsupported llm provider")
+            return f"Error: {llm_provider}: unsupported llm provider"
 
         logger.info(f"llm provider: {llm_provider}")
         api_key = runtime_app_config.get(provider.config_key("api_key"), "")
@@ -178,22 +187,22 @@ def _generate_response(prompt: str, app_config=None) -> str:
         }
 
         if provider.requires_api_key and not api_key:
-            raise ValueError(
-                f"{llm_provider}: api_key is not set, please set it in the config.toml file."
+            return (
+                f"Error: {llm_provider}: api_key is not set, please set it in the config.toml file."
             )
         if provider.requires_model_name and not model_name:
-            raise ValueError(
-                f"{llm_provider}: model_name is not set, please set it in the config.toml file."
+            return (
+                f"Error: {llm_provider}: model_name is not set, please set it in the config.toml file."
             )
         if provider.requires_base_url and not base_url:
-            raise ValueError(
-                f"{llm_provider}: base_url is not set, please set it in the config.toml file."
+            return (
+                f"Error: {llm_provider}: base_url is not set, please set it in the config.toml file."
             )
 
         for field in provider.extra_fields:
             if field.required and not extra_values[field.config_suffix]:
-                raise ValueError(
-                    f"{llm_provider}: {field.config_suffix} is not set, "
+                return (
+                    f"Error: {llm_provider}: {field.config_suffix} is not set, "
                     "please set it in the config.toml file."
                 )
 
@@ -288,8 +297,8 @@ def _generate_response(prompt: str, app_config=None) -> str:
             import litellm
 
             if not model_name:
-                raise ValueError(
-                    f"{llm_provider}: model_name is not set, please set it in the config.toml file."
+                return (
+                    f"Error: {llm_provider}: model_name is not set, please set it in the config.toml file."
                 )
 
             response = litellm.completion(
@@ -299,9 +308,9 @@ def _generate_response(prompt: str, app_config=None) -> str:
             )
 
             if not response:
-                raise ValueError(f"[{llm_provider}] returned empty response")
+                return f"Error: [{llm_provider}] returned empty response"
             if not getattr(response, "choices", None):
-                raise ValueError(f"[{llm_provider}] returned empty response")
+                return f"Error: [{llm_provider}] returned empty response"
 
             return _extract_chat_completion_text(response, llm_provider)
 
@@ -377,7 +386,8 @@ def _generate_response(prompt: str, app_config=None) -> str:
             )
 
     except Exception as e:
-        return f"Error: {_sanitize_error_message(e)}"
+        logger.error(f"failed to generate response: {_sanitize_error_message(e)}")
+        return "Error: generation failed"
 
 
 def test_connection() -> tuple[bool, str, float]:

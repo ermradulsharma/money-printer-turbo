@@ -964,15 +964,20 @@ class TestLiteLLMProvider(unittest.TestCase):
             chat=types.SimpleNamespace(completions=FakeCompletions())
         )
 
-        with patch.object(llm, "OpenAI", return_value=fake_client):
+        with (
+            patch.object(llm, "OpenAI", return_value=fake_client),
+            patch.object(llm.logger, "error") as mock_logger,
+        ):
             result = llm._generate_response("test")
 
-        self.assertIn("Error:", result)
-        self.assertIn("https://***:***@proxy.example.com", result)
-        self.assertIn("access_token=***", result)
-        self.assertNotIn("myuser", result)
-        self.assertNotIn("mypassword", result)
-        self.assertNotIn("secret-token", result)
+        self.assertEqual(result, "Error: generation failed")
+        mock_logger.assert_called_once()
+        log_message = mock_logger.call_args[0][0]
+        self.assertIn("https://***:***@proxy.example.com", log_message)
+        self.assertIn("access_token=***", log_message)
+        self.assertNotIn("myuser", log_message)
+        self.assertNotIn("mypassword", log_message)
+        self.assertNotIn("secret-token", log_message)
 
     def test_openai_provider_still_uses_existing_path(self):
         config.app["llm_provider"] = "openai"
