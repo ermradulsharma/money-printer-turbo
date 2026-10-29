@@ -20,7 +20,12 @@ def resolve_path_within_directory(
     allowed_prefix = (
         base_dir_real if base_dir_real.endswith(os.sep) else base_dir_real + os.sep
     )
-    if not (resolved_path == base_dir_real or resolved_path.startswith(allowed_prefix)):
+    if resolved_path == base_dir_real:
+        if require_file:
+            raise ValueError("file does not exist")
+        return resolved_path
+
+    if not resolved_path.startswith(allowed_prefix):
         raise ValueError("path is outside the allowed directory")
 
     try:

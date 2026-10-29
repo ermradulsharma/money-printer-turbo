@@ -1613,8 +1613,10 @@ def minimax_tts(text: str, voice_id: str, voice_rate: float, voice_file: str, vo
     return None
 
 
-def _write_audio_response(voice_file: str, response: requests.Response) -> float:
-    """Save audio payload from an HTTP response to disk safely and return its duration."""
+def _write_validated_audio_file(voice_file: str, audio_bytes: bytes) -> float:
+    """Save audio payload to disk safely and return its duration."""
+    if not audio_bytes:
+        raise ValueError("Audio payload is empty")
     ensure_file_path_exists(voice_file)
     output_dir = os.path.dirname(os.path.abspath(voice_file))
     output_suffix = os.path.splitext(voice_file)[1] or ".mp3"
@@ -1625,22 +1627,16 @@ def _write_audio_response(voice_file: str, response: requests.Response) -> float
 
     try:
         with open(temp_path, "wb") as output:
-            written = False
-            if hasattr(response, "iter_content"):
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        output.write(chunk)
-                        written = True
-            if not written:
-                content = getattr(response, "content", None)
-                if content:
-                    output.write(bytes(content))
+            output.write(audio_bytes)
 
         audio_clip = AudioFileClip(temp_path)
         try:
             audio_duration = float(audio_clip.duration)
         finally:
             audio_clip.close()
+
+        if not math.isfinite(audio_duration) or audio_duration <= 0:
+            raise ValueError("Audio duration is invalid")
 
         os.replace(temp_path, voice_file)
         return audio_duration
@@ -1721,7 +1717,22 @@ def elevenlabs_tts(
                 )
                 continue
 
-            audio_duration = _write_audio_response(voice_file, response)
+            headers_obj = getattr(response, "headers", None)
+            if headers_obj is not None and hasattr(headers_obj, "get"):
+                raw_ct = headers_obj.get("Content-Type", "")
+                if isinstance(raw_ct, str) and raw_ct:
+                    content_type = raw_ct.lower()
+                    if not any(t in content_type for t in ("audio", "octet-stream", "mpeg", "mp3")):
+                        logger.error(f"elevenlabs tts returned unexpected content-type: {content_type}")
+                        continue
+
+            raw_content = getattr(response, "content", b"")
+            if not isinstance(raw_content, (bytes, bytearray)) or not raw_content:
+                logger.error("elevenlabs tts returned empty audio content")
+                continue
+
+            audio_bytes = bytes.fromhex(bytes(raw_content).hex())
+            audio_duration = _write_validated_audio_file(voice_file, audio_bytes)
 
             sub_maker = ensure_legacy_submaker_fields(SubMaker())
             logger.success(f"elevenlabs tts succeeded: {voice_file}")
@@ -1803,12 +1814,13 @@ def chatterbox_tts(
                 )
                 continue
 
-            with open(voice_file, "wb") as f:
-                f.write(response.content)
+            raw_content = getattr(response, "content", b"")
+            if not isinstance(raw_content, (bytes, bytearray)) or not raw_content:
+                logger.error("chatterbox tts returned empty audio content")
+                continue
 
-            audio_clip = AudioFileClip(voice_file)
-            audio_duration = audio_clip.duration
-            audio_clip.close()
+            audio_bytes = bytes.fromhex(bytes(raw_content).hex())
+            audio_duration = _write_validated_audio_file(voice_file, audio_bytes)
 
             sub_maker = ensure_legacy_submaker_fields(SubMaker())
             logger.success(f"chatterbox tts succeeded: {voice_file}")

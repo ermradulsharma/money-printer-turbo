@@ -301,10 +301,38 @@ def delete_video(request: Request, task_id: str = Path(..., description="Task ID
                 message=f"{request_id}: task is still running",
             )
 
-        tasks_dir = utils.task_dir()
+        if not re.match(r"^[a-zA-Z0-9_-]+$", task_id):
+            raise HttpException(
+                task_id=task_id,
+                status_code=400,
+                message=f"{request_id}: invalid task id",
+            )
+
+        tasks_dir = os.path.realpath(utils.task_dir())
+        tasks_prefix = tasks_dir if tasks_dir.endswith(os.sep) else tasks_dir + os.sep
         current_task_dir = _resolve_path_within_directory(
             tasks_dir, task_id, request_id, require_file=False
         )
+        if not current_task_dir.startswith(tasks_prefix):
+            raise HttpException(
+                task_id=task_id,
+                status_code=403,
+                message=f"{request_id}: invalid task path",
+            )
+        try:
+            if os.path.commonpath([tasks_dir, current_task_dir]) != tasks_dir:
+                raise HttpException(
+                    task_id=task_id,
+                    status_code=403,
+                    message=f"{request_id}: invalid task path",
+                )
+        except ValueError:
+            raise HttpException(
+                task_id=task_id,
+                status_code=403,
+                message=f"{request_id}: invalid task path",
+            )
+
         if os.path.exists(current_task_dir) and os.path.isdir(current_task_dir):
             shutil.rmtree(current_task_dir)
 
@@ -442,14 +470,47 @@ def upload_video_material_file(request: Request, file: UploadFile = File(...)):
 @router.get("/stream/{file_path:path}")
 async def stream_video(request: Request, file_path: str):
     request_id = base.get_task_id(request)
-    tasks_dir = utils.task_dir()
+    tasks_dir = os.path.realpath(utils.task_dir())
+    tasks_prefix = tasks_dir if tasks_dir.endswith(os.sep) else tasks_dir + os.sep
     video_path = _resolve_path_within_directory(tasks_dir, file_path, request_id)
+    if not video_path.startswith(tasks_prefix):
+        raise HttpException(
+            task_id=request_id,
+            status_code=403,
+            message=f"{request_id}: invalid file path",
+        )
+    try:
+        if os.path.commonpath([tasks_dir, video_path]) != tasks_dir:
+            raise HttpException(
+                task_id=request_id,
+                status_code=403,
+                message=f"{request_id}: invalid file path",
+            )
+    except ValueError:
+        raise HttpException(
+            task_id=request_id,
+            status_code=403,
+            message=f"{request_id}: invalid file path",
+        )
+    if not os.path.isfile(video_path):
+        raise HttpException(
+            task_id=request_id,
+            status_code=404,
+            message=f"{request_id}: file does not exist",
+        )
+
     range_header = request.headers.get("Range")
     video_size = os.path.getsize(video_path)
     start, end = _parse_byte_range(range_header, video_size, request_id)
     length = end - start + 1
 
     def file_iterator(stream_path, offset=0, bytes_to_read=None):
+        if not stream_path.startswith(tasks_prefix) or not os.path.isfile(stream_path):
+            raise HttpException(
+                task_id=request_id,
+                status_code=403,
+                message=f"{request_id}: invalid stream path",
+            )
         with open(stream_path, "rb") as f:
             f.seek(offset, os.SEEK_SET)
             remaining = bytes_to_read or video_size
@@ -481,11 +542,38 @@ async def download_video(request: Request, file_path: str):
     :return: video file
     """
     request_id = base.get_task_id(request)
-    tasks_dir = utils.task_dir()
+    tasks_dir = os.path.realpath(utils.task_dir())
+    tasks_prefix = tasks_dir if tasks_dir.endswith(os.sep) else tasks_dir + os.sep
     video_path = _resolve_path_within_directory(tasks_dir, file_path, request_id)
-    file_path = pathlib.Path(video_path)
-    filename = file_path.stem
-    extension = file_path.suffix
+    if not video_path.startswith(tasks_prefix):
+        raise HttpException(
+            task_id=request_id,
+            status_code=403,
+            message=f"{request_id}: invalid file path",
+        )
+    try:
+        if os.path.commonpath([tasks_dir, video_path]) != tasks_dir:
+            raise HttpException(
+                task_id=request_id,
+                status_code=403,
+                message=f"{request_id}: invalid file path",
+            )
+    except ValueError:
+        raise HttpException(
+            task_id=request_id,
+            status_code=403,
+            message=f"{request_id}: invalid file path",
+        )
+    if not os.path.isfile(video_path):
+        raise HttpException(
+            task_id=request_id,
+            status_code=404,
+            message=f"{request_id}: file does not exist",
+        )
+
+    resolved_file = pathlib.Path(video_path)
+    filename = resolved_file.stem
+    extension = resolved_file.suffix
     headers = {"Content-Disposition": f"attachment; filename={filename}{extension}"}
     return FileResponse(
         path=video_path,

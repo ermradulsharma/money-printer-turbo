@@ -37,13 +37,18 @@ def generate_video_script(request: Request, body: VideoScriptRequest):
             video_script_prompt=body.video_script_prompt,
             custom_system_prompt=body.custom_system_prompt,
         )
-        if not video_script or str(video_script).startswith("Error:"):
+        if (
+            not video_script
+            or not isinstance(video_script, str)
+            or video_script.startswith("Error:")
+            or "Error:" in video_script
+        ):
             raise HttpException(
                 task_id=request_id,
                 status_code=500,
                 message=f"{request_id}: failed to generate video script",
             )
-        response = {"video_script": video_script}
+        response = {"video_script": str(video_script).strip()}
         return utils.get_response(200, response)
     except HttpException:
         raise
@@ -76,13 +81,27 @@ def generate_video_terms(request: Request, body: VideoTermsRequest):
             amount=body.amount,
             match_script_order=body.match_materials_to_script,
         )
-        if not isinstance(video_terms, list):
+        if not isinstance(video_terms, list) or not video_terms:
             raise HttpException(
                 task_id=request_id,
                 status_code=500,
                 message=f"{request_id}: failed to generate video terms",
             )
-        response = {"video_terms": video_terms}
+        sanitized_terms = [
+            str(term).strip()
+            for term in video_terms
+            if isinstance(term, str)
+            and term.strip()
+            and not term.startswith("Error:")
+            and "Error:" not in term
+        ]
+        if not sanitized_terms:
+            raise HttpException(
+                task_id=request_id,
+                status_code=500,
+                message=f"{request_id}: failed to generate video terms",
+            )
+        response = {"video_terms": sanitized_terms}
         return utils.get_response(200, response)
     except HttpException:
         raise
@@ -117,13 +136,22 @@ def generate_video_social_metadata(
             language=body.language,
             platform=body.platform,
         )
-        if not isinstance(metadata, dict):
+        if not isinstance(metadata, dict) or not metadata:
             raise HttpException(
                 task_id=request_id,
                 status_code=500,
                 message=f"{request_id}: failed to generate social metadata",
             )
-        return utils.get_response(200, metadata)
+        sanitized_metadata = {
+            str(k): (
+                [str(item) for item in v if isinstance(item, str) and not item.startswith("Error:")]
+                if isinstance(v, list)
+                else str(v)
+            )
+            for k, v in metadata.items()
+            if not str(k).startswith("Error:") and not str(v).startswith("Error:")
+        }
+        return utils.get_response(200, sanitized_metadata)
     except HttpException:
         raise
     except Exception as exc:

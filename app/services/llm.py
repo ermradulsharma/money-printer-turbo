@@ -1,5 +1,4 @@
 import json
-import logging
 import re
 from time import perf_counter
 from typing import List
@@ -522,23 +521,24 @@ def generate_script(
                 response = _generate_response(prompt=prompt)
             else:
                 response = _generate_response(prompt=prompt, app_config=app_config)
-            if response:
-                final_script = format_response(response)
-            else:
-                logging.error("gpt returned an empty response")
+            if not response or (isinstance(response, str) and ("Error:" in response or response.startswith("Error:"))):
+                logger.warning(f"failed to generate video script, trying again... {i + 1}")
+                continue
+
+            final_script = format_response(response)
 
             # Some upstream providers may return quota errors as plain text.
             if final_script and "当日额度已消耗完" in final_script:
                 raise ValueError(final_script)
 
-            if final_script:
+            if final_script and not final_script.startswith("Error:") and "Error:" not in final_script:
                 break
         except Exception as e:
             logger.error(f"failed to generate script: {e}")
 
         if i < _max_retries:
             logger.warning(f"failed to generate video script, trying again... {i + 1}")
-    if "Error: " in final_script:
+    if not final_script or "Error:" in final_script:
         logger.error(f"failed to generate video script: {final_script}")
         return ""
     else:
@@ -665,7 +665,7 @@ Please note that you must use English for generating video search terms; Chinese
                 response = _generate_response(prompt)
             else:
                 response = _generate_response(prompt, app_config=app_config)
-            if response.startswith("Error: "):
+            if not response or (isinstance(response, str) and ("Error:" in response or response.startswith("Error:"))):
                 logger.error(f"failed to generate video terms: {response}")
                 return []
             search_terms = _safe_json_parse(response)
@@ -683,8 +683,15 @@ Please note that you must use English for generating video search terms; Chinese
         if i < _max_retries:
             logger.warning(f"failed to generate video terms, trying again... {i + 1}")
 
-    logger.success(f"completed: \n{search_terms}")
-    return search_terms
+    if not search_terms:
+        return []
+    cleaned_terms = [
+        str(term).strip()
+        for term in search_terms
+        if isinstance(term, str) and term.strip() and not term.strip().startswith("Error:") and "Error:" not in term
+    ]
+    logger.success(f"completed: \n{cleaned_terms}")
+    return cleaned_terms
 
 
 # =============================================================================
@@ -918,12 +925,13 @@ def generate_social_metadata(
     for i in range(_max_retries):
         try:
             response = _generate_response(prompt)
-            if isinstance(response, str) and "Error: " in response:
+            if not response or (isinstance(response, str) and ("Error:" in response or response.startswith("Error:"))):
                 logger.error(f"failed to generate social metadata: {response}")
                 break
             metadata = _parse_social_metadata(response, platform)
-            logger.success(f"completed: \n{metadata}")
-            return metadata
+            if isinstance(metadata, dict) and metadata:
+                logger.success(f"completed: \n{metadata}")
+                return metadata
         except Exception as e:
             logger.warning(f"failed to parse social metadata: {str(e)}")
 
