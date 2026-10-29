@@ -25,6 +25,40 @@ if root_dir in sys.path:
     sys.path.remove(root_dir)
 sys.path.insert(0, root_dir)
 
+
+def _patch_streamlit_starlette_gzip_middleware():
+    """Ensure Streamlit GZip middleware sends http.response.start for excluded media types."""
+    try:
+        from streamlit.web.server.starlette import starlette_gzip_middleware as gm
+
+        def _make_patched_send(orig_cls):
+            async def patched_send(self, message):
+                if message.get("type") == "http.response.start":
+                    gm._handle_response_start(self, message)
+                    if (
+                        getattr(self, "content_type_is_excluded", False)
+                        or getattr(self, "content_encoding_set", False)
+                        or getattr(self, "partial_response", False)
+                    ):
+                        await self.send(self.initial_message)
+                else:
+                    await super(orig_cls, self).send_with_compression(message)
+
+            return patched_send
+
+        for responder_cls in (
+            gm._MediaAwareIdentityResponder,
+            gm._MediaAwareGZipResponder,
+        ):
+            if not getattr(responder_cls, "_mpt_patched", False):
+                responder_cls.send_with_compression = _make_patched_send(responder_cls)
+                responder_cls._mpt_patched = True
+    except Exception:
+        pass
+
+
+_patch_streamlit_starlette_gzip_middleware()
+
 from app.config import config
 from app.models import const
 from app.models.llm_provider import (
