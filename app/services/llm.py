@@ -540,6 +540,7 @@ def generate_script(
             logger.warning(f"failed to generate video script, trying again... {i + 1}")
     if "Error: " in final_script:
         logger.error(f"failed to generate video script: {final_script}")
+        return ""
     else:
         logger.success(f"completed: \n{final_script}")
     return final_script.strip()

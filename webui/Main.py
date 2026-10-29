@@ -2754,6 +2754,23 @@ def _loomloom_video_scene_prompts(video_terms, subject, scene_count):
     )
 
 
+def _credential_signature(value: str) -> str:
+    """
+    生成只用于缓存失效判断的凭证摘要。
+
+    使用 PBKDF2-HMAC-SHA256 计算慢速带盐摘要，避免弱哈希算法处理敏感凭证。
+    摘要不会写入配置、日志或任务文件。用户修改 API Key 后摘要会变化，从而
+    强制重新调用当前服务，避免旧试听/预估缓存让无效的新凭证看起来可用。
+    """
+    normalized_value = str(value or "")
+    if not normalized_value:
+        return ""
+    salt = b"mpt-credential-cache-salt"
+    return hashlib.pbkdf2_hmac(
+        "sha256", normalized_value.encode("utf-8"), salt, 100_000
+    ).hex()
+
+
 def _loomloom_video_signature(batch, credential_fingerprint):
     """Documentation."""
     payload = {
@@ -2789,7 +2806,7 @@ def _current_loomloom_video_quote_context(params):
         )
     except (loomloom.LoomLoomError, ValueError):
         return None, ""
-    fingerprint = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    fingerprint = _credential_signature(token)
     return batch, _loomloom_video_signature(batch, fingerprint)
 
 
@@ -3097,11 +3114,7 @@ def _render_loomloom_script_generation(params):
         candidate_count=candidate_count,
         duration_seconds=duration_seconds,
         style=params.video_script_prompt,
-        credential_fingerprint=(
-            hashlib.sha256(effective_token.encode("utf-8")).hexdigest()
-            if effective_token
-            else ""
-        ),
+        credential_fingerprint=_credential_signature(effective_token),
     )
 
     if st.button(
@@ -3723,19 +3736,6 @@ def _voice_preview_fingerprint(
     }
     encoded = json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
-
-
-def _credential_signature(value: str) -> str:
-    """
-    生成只用于缓存失效判断的凭证摘要。
-
-    摘要不会写入配置、日志或任务文件。用户修改 API Key 后摘要会变化，从而
-    强制重新调用当前配音服务，避免旧试听缓存让无效的新凭证看起来可用。
-    """
-    normalized_value = str(value or "")
-    if not normalized_value:
-        return ""
-    return hashlib.sha256(normalized_value.encode("utf-8")).hexdigest()
 
 
 def _get_voice_preview_provider_signature(tts_server: str) -> dict:

@@ -1613,6 +1613,45 @@ def minimax_tts(text: str, voice_id: str, voice_rate: float, voice_file: str, vo
     return None
 
 
+def _write_audio_response(voice_file: str, response: requests.Response) -> float:
+    """Save audio payload from an HTTP response to disk safely and return its duration."""
+    ensure_file_path_exists(voice_file)
+    output_dir = os.path.dirname(os.path.abspath(voice_file))
+    output_suffix = os.path.splitext(voice_file)[1] or ".mp3"
+    temp_fd, temp_path = tempfile.mkstemp(
+        prefix=".tts-audio-", suffix=output_suffix, dir=output_dir
+    )
+    os.close(temp_fd)
+
+    try:
+        with open(temp_path, "wb") as output:
+            written = False
+            if hasattr(response, "iter_content"):
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        output.write(chunk)
+                        written = True
+            if not written:
+                content = getattr(response, "content", None)
+                if content:
+                    output.write(bytes(content))
+
+        audio_clip = AudioFileClip(temp_path)
+        try:
+            audio_duration = float(audio_clip.duration)
+        finally:
+            audio_clip.close()
+
+        os.replace(temp_path, voice_file)
+        return audio_duration
+    finally:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
+
+
 def elevenlabs_tts(
     text: str,
     voice_id: str,
@@ -1682,12 +1721,7 @@ def elevenlabs_tts(
                 )
                 continue
 
-            with open(voice_file, "wb") as f:
-                f.write(response.content)
-
-            audio_clip = AudioFileClip(voice_file)
-            audio_duration = audio_clip.duration
-            audio_clip.close()
+            audio_duration = _write_audio_response(voice_file, response)
 
             sub_maker = ensure_legacy_submaker_fields(SubMaker())
             logger.success(f"elevenlabs tts succeeded: {voice_file}")
