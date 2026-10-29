@@ -445,8 +445,6 @@ def load_config():
             shutil.copyfile(example_file, config_file)
             logger.info("copy config.example.toml to config.toml")
 
-    logger.info(f"load config from file: {config_file}")
-
     return _load_toml_config(config_file)
 
 
